@@ -174,6 +174,12 @@ public final class svCONST {
 	public static final long OBJECT_TYPE_SDI_GEOJSONFILE = MIN_WRITEABLE_OBJID + 44;
 	public static final long OBJECT_TYPE_SDI_DESCRIPTOR = MIN_WRITEABLE_OBJID + 45;
 	public static final long OBJECT_TYPE_SDI_SERVICE = MIN_WRITEABLE_OBJID + 46;
+	
+	// Svarog batch
+	public static final long OBJECT_TYPE_BATCH_JOB_TYPE = MIN_WRITEABLE_OBJID + 47;
+	public static final long OBJECT_TYPE_BATCH_JOB = MIN_WRITEABLE_OBJID + 48;
+	public static final long OBJECT_TYPE_BATCH_JOB_TEMPLATE = MIN_WRITEABLE_OBJID + 49;
+	public static final long OBJECT_TYPE_BATCH_JOB_PARAM = MIN_WRITEABLE_OBJID + 50;
 
 	/* SVAROG WELL KNOWN SECURITY IDs */
 	public static final String SID_NOBODY_UID = "S-1-0-0";
