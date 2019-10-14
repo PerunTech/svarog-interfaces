@@ -192,7 +192,9 @@ public final class svCONST {
 	public static final long OBJECT_TYPE_BATCH_JOB_TEMPLATE = MIN_WRITEABLE_OBJID + 49;
 	//ID: OBJECT_TYPE_BATCH_JOB_PARAM for table name BATCH_JOB_PARAM
 	public static final long OBJECT_TYPE_BATCH_JOB_PARAM = MIN_WRITEABLE_OBJID + 50;
-
+	//ID: OBJECT_TYPE_BATCH_JOB_PARAM for table name BATCH_JOB_PARAM
+	public static final long OBJECT_TYPE_BATCH_JOB_CONFIG = MIN_WRITEABLE_OBJID + 51;
+	
 	/* SVAROG WELL KNOWN SECURITY IDs */
 	public static final String SID_NOBODY_UID = "S-1-0-0";
 	public static final String SID_EVERYONE_UID = "S-1-1-0";

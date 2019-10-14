@@ -18,6 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -36,27 +37,37 @@ public interface ISvDatabaseIO {
 	 * let the Database method be aware of the currently active srid of GIS data
 	 * sets
 	 * 
-	 * @param srid The SRID to be used for any GIS operations.
+	 * @param srid
+	 *            The SRID to be used for any GIS operations.
 	 */
 	public void initSrid(String srid);
 
-	
 	/**
-	 * Method to allow svarog to read a blob from the record set at position into Geometry 
-	 * @param resultSet The jdbc result set from which the geometry shall be read
-	 * @param columnIndex the column ordinal in the resultset containing the geometry
+	 * Method to allow svarog to read a blob from the record set at position
+	 * into Geometry
+	 * 
+	 * @param resultSet
+	 *            The jdbc result set from which the geometry shall be read
+	 * @param columnIndex
+	 *            the column ordinal in the resultset containing the geometry
 	 * @return Geometry object
 	 */
-	public byte[] getGeometry(ResultSet resultSet, int columnIndex)  throws SQLException;
-	
+	public byte[] getGeometry(ResultSet resultSet, int columnIndex) throws SQLException;
+
 	/**
-	 * Method to allow svarog to bind a geometry to the prepared statement at specified position  
-	 * @param preparedStatement The jdbc preparedStatement to from which the geometry shall bound
-	 * @param position the position on which the geometry shall be bound
-	 * @param value The geometry instance
+	 * Method to allow svarog to bind a geometry to the prepared statement at
+	 * specified position
+	 * 
+	 * @param preparedStatement
+	 *            The jdbc preparedStatement to from which the geometry shall
+	 *            bound
+	 * @param position
+	 *            the position on which the geometry shall be bound
+	 * @param value
+	 *            The geometry instance
 	 */
 	public void setGeometry(PreparedStatement preparedStatement, int position, byte[] value) throws Exception;
-	
+
 	/**
 	 * Method to return the Timestamp class which the specific jdbc driver uses
 	 * for fetching date time/timestamp columns. The columns of this type will
@@ -84,10 +95,15 @@ public interface ISvDatabaseIO {
 	 *            The JDBC connection used to prepare the statement
 	 * @param defaultStatement
 	 *            The default statement as prepared by SVAROG
+	 * @param schema
+	 *            The database schema in which the repo table resides
+	 * @param repoName
+	 *            The name of the repo table in which the objects shall be inserted
 	 * @return An instance of Prepared Statement ready for execution
 	 * @throws SQLException
 	 */
-	PreparedStatement getInsertRepoStatement(Connection conn, String defaultStatement) throws SQLException;
+	PreparedStatement getInsertRepoStatement(Connection conn, String defaultStatement, String schema, String repoName)
+			throws SQLException;
 
 	/**
 	 * If the handler uses a specific STRUCT for passing data to the custom
@@ -95,9 +111,11 @@ public interface ISvDatabaseIO {
 	 * 
 	 * @param conn
 	 *            The connection used for preparing the structure.
+	 * @param maxSize
+	 *            The maximum number of repo objects expected in this batch
 	 * @return An instance of the structure
 	 */
-	Object getInsertRepoStruct(Connection conn) throws SQLException;
+	Object getInsertRepoStruct(Connection conn, int maxSize) throws SQLException;
 
 	/**
 	 * For each of the saved objects, the method to batch the repo records is
@@ -126,7 +144,8 @@ public interface ISvDatabaseIO {
 	 * @throws SQLException
 	 */
 	void addRepoBatch(Object insertRepoStruct, Long PKID, Long oldMetaPKID, Long objectId, Timestamp dtInsert,
-			Timestamp maxDateSql, Long parentId, Long objType, String objStatus, Long userId) throws SQLException;
+			Timestamp maxDateSql, Long parentId, Long objType, String objStatus, Long userId, int rowIndex)
+			throws SQLException;
 
 	/**
 	 * After all objects have been properly batched, the repoSaveGetKeys method
@@ -138,10 +157,10 @@ public interface ISvDatabaseIO {
 	 *            The insert statement
 	 * @param insertRepoStruct
 	 *            The structure holding the repo objects for the batch
-	 * @return A resultset holding the generated PKID/ObjectId
+	 * @return A map holding the pairs of generated PKID/ObjectId
 	 * @throws SQLException
 	 */
-	ResultSet repoSaveGetKeys(PreparedStatement repoInsert, Object insertRepoStruct) throws SQLException;
+	Map<Long, Long> repoSaveGetKeys(PreparedStatement repoInsert, Object insertRepoStruct) throws SQLException;
 
 	/**
 	 * Method to prepare array type specific to the database in case of
