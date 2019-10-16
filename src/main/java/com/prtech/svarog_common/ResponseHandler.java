@@ -8,11 +8,18 @@ import com.prtech.svarog_common.Jsonable;
 import com.prtech.svarog_interfaces.II18n;
 
 public class ResponseHandler extends Jsonable {
-
-public enum MessageType {
+	/**
+	 * Enum type for the type of response
+	 * @author ristepejov
+	 *
+	 */
+	public enum MessageType {
 		SUCCESS, ERROR, WARNING, INFO, EXCEPTION
 	}
 
+	static II18n i18n = null;
+	static String userLocale = null;
+	
 	private MessageType rType;
 	private String rTitle;
 	private String rMessage;
@@ -37,7 +44,7 @@ public enum MessageType {
 	public static ResponseHandler responseHandlerByException(JsonObject afterJson, String titleOverwrite) {
 		ResponseHandler jrh = new ResponseHandler();
 		String errCOde = "";
-		
+
 		if (afterJson.has("ERROR_ID"))
 			errCOde = afterJson.get("ERROR_ID").getAsString();
 		String errTitle = "";
@@ -48,7 +55,9 @@ public enum MessageType {
 		String customType = "ERROR";
 		if ("error.invalid_session".equalsIgnoreCase(errTitle) || "system.under.maintenance".equalsIgnoreCase(errTitle))
 			customType = "EXCEPTION";
-		jrh.create(customType, I18n.getText(errTitle), errCOde, new JsonObject());
+		jrh.create(customType, 
+				(i18n!=null?i18n.getI18nText(userLocale,errTitle):errTitle)
+				, errCOde, new JsonObject());
 		return jrh;
 	}
 
@@ -142,7 +151,7 @@ public enum MessageType {
 			sData = data;
 		}
 	}
-	
+
 	public void create(MessageType typee, String title, String message, String data) {
 		responseObject = createBasicData(typee, title, message);
 		if (data != null && data != "") {
@@ -175,7 +184,7 @@ public enum MessageType {
 		}
 		return responseObject;
 	}
-	
+
 	public JsonObject create(MessageType typee, String title, String message, JsonElement data) {
 		responseObject = createBasicData(typee, title, message);
 		if (data != null) {
@@ -218,7 +227,7 @@ public enum MessageType {
 			case "EXCEPTION":
 				rType = MessageType.EXCEPTION;
 				break;
-				default:
+			default:
 			}
 		}
 		if (title != null && title != "") {
@@ -231,7 +240,7 @@ public enum MessageType {
 		}
 		return responseObject;
 	}
-	
+
 	private JsonObject createBasicData(MessageType typee, String title, String message) {
 		responseObject = new JsonObject();
 		if (typee != null) {
@@ -268,7 +277,7 @@ public enum MessageType {
 	public void create(String typee, String title, String message) {
 		create(typee, title, message, "");
 	}
-	
+
 	public void create(MessageType typee, String title, String message) {
 		create(typee, title, message, "");
 	}
@@ -276,7 +285,7 @@ public enum MessageType {
 	public JsonObject addJsonObjectElementData(JsonElement data) {
 		if (data != null) {
 			responseObject.add("data", data);
-			jData =  data;
+			jData = data;
 		}
 		return responseObject;
 	}
