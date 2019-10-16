@@ -32,6 +32,7 @@ public class SvException extends Exception {
 	private static final long serialVersionUID = 1L;
 	
 	static II18n i18n=null;
+	static String userLocale = null;
 	
 	DbDataObject instanceUser=null;
 	Jsonable userData=null;
@@ -71,7 +72,7 @@ public class SvException extends Exception {
 		String errMessage = "ERROR_ID:" + this.getInstanceUser().getVal("USER_NAME") + "."
 				+ this.getTimeStamp().getMillis() + ", \n";
 		errMessage += "Error Code:" + this.getLabelCode()+ ", \n";
-		errMessage += "Error Message:" + (i18n!=null?i18n.getText(this.getLabelCode()):this.getLabelCode())+ ", \n";
+		errMessage += "Error Message:" + (i18n!=null?i18n.getI18nText(userLocale, this.getLabelCode()):this.getLabelCode())+ ", \n";
 		String confStr = (this.getConfigData() != null ? (this.getConfigData() instanceof  Jsonable?((Jsonable)this.getConfigData()).toJson().toString():this.getConfigData().toString()): "N/A. ");
 		errMessage += "Config Data:" + confStr + ", \n";
 		errMessage += "User Data:" + (this.getUserData() != null ? this.getUserData().toJson() : "N/A. ")+ "";
@@ -84,7 +85,8 @@ public class SvException extends Exception {
 		JsonObject obj = new JsonObject();
 		obj.addProperty("ERROR_ID", this.getInstanceUser().getVal("USER_NAME") + "."
 				+ this.getTimeStamp().getMillis());
-		obj.addProperty("Error_Message", (this.getLabelCode()));
+		obj.addProperty("Label_Code", this.getLabelCode());
+		obj.addProperty("Error_Message", (i18n!=null?i18n.getI18nText(userLocale, this.getLabelCode()):this.getLabelCode()));
 		String confStr = (this.getConfigData() != null ? (this.getConfigData() instanceof  Jsonable?((Jsonable)this.getConfigData()).toJson().toString():this.getConfigData().toString()): "N/A. ");
 		obj.addProperty("Config_Data", confStr);
 		obj.addProperty("User_Data" , (String) (this.getUserData() != null ? this.getUserData().toJson().toString() : "N/A. "));
