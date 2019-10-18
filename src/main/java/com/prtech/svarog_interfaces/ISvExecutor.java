@@ -30,6 +30,14 @@ import com.prtech.svarog.SvException;
  */
 public interface ISvExecutor {
 	/**
+	 * Method to get the version UID of the executor.
+	 * 
+	 * @return Returns the version of the executor. It is used to differentiate
+	 *         between different versions, with different start/end dates.
+	 */
+	public long versionUID();
+
+	/**
 	 * Method to describe the resulting class
 	 * 
 	 * @return Returns the Class<?> type of the object returned by the execute
@@ -84,10 +92,13 @@ public interface ISvExecutor {
 	 * Main method to be called from the service bundle. The actual execution of
 	 * the service is done by this method.
 	 * 
-	 * @param params Map holding the params to be passed
-	 * @param svCore Instance of ISvCore which is executing the request  
+	 * @param params
+	 *            Map holding the params to be passed
+	 * @param svCore
+	 *            Instance of ISvCore which is executing the request
 	 * @return Object of type described by {@link #getReturningType()}
-	 * @throws SvException  Throws any underlying exception
+	 * @throws SvException
+	 *             Throws any underlying exception
 	 */
 	public Object execute(Map<String, Object> params, ISvCore svCore) throws SvException;
 }
