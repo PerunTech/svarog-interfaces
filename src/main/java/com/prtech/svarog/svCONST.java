@@ -54,7 +54,7 @@ public final class svCONST {
 	public static final String masterSDIPath = "sdi/";
 	public static final String masterLabelsPath = "labels/";
 	public static final String masterSecurityPath = "security/";
-	public static final String masterCodesPath = "codes/";
+	public static final String masterCodesPath = "com/prtech/svarog/codes/";
 	public static final String fileListName = "file_list.txt";
 	public static final String sdiGridFile = "grid.json";
 
