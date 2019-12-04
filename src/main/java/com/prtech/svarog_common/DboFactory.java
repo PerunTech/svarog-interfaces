@@ -14,18 +14,43 @@
 package com.prtech.svarog_common;
 
 /**
- * Simple factory class, to make a DbDataObject read-only. Its one way operation.
+ * Simple factory class, to make a DbDataObject read-only. Its one way
+ * operation.
+ * 
  * @author ristepejov
  *
  */
 public class DboFactory {
 
 	/**
-	 * Set the protected member DbDataObject.isReadOnly to true 
-	 * @param dbo The DbDataObject instance which will be flagged as read-only
+	 * Set the protected member DbDataObject.isReadOnly to true
+	 * 
+	 * @param dbo
+	 *            The DbDataObject instance which will be flagged as read-only
 	 */
-	public static void makeDboReadOnly(DbDataObject dbo)
-	{
-		dbo.isReadOnly=true;
+	public static void makeDboReadOnly(DbDataObject dbo) {
+		dbo.isReadOnly = true;
+	}
+
+	/**
+	 * Set the protected member DbDataObject.hasGeometry to true
+	 * 
+	 * @param dbo
+	 *            The DbDataObject instance which will be flagged as
+	 *            hasGeometry=true
+	 */
+	public static void dboHasGeometry(DbDataObject dbo) {
+		dbo.setHasGeometry(true);
+	}
+
+	/**
+	 * Set the protected member DbDataObject.isGeometryType to true
+	 * 
+	 * @param dbo
+	 *            The DbDataObject instance which will be flagged as
+	 *            isGeometryType=true
+	 */
+	public static void dboIsGeometryType(DbDataObject dbo) {
+		dbo.setIsGeometryType(true);
 	}
 }
