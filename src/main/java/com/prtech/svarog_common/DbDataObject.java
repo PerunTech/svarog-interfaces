@@ -19,12 +19,10 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import org.joda.time.DateTime;
 
 import com.google.gson.JsonObject;
-import com.prtech.svarog.SvException;
 import com.prtech.svarog.svCONST;
 
 public class DbDataObject extends Jsonable {
@@ -105,7 +103,7 @@ public class DbDataObject extends Jsonable {
 	public Boolean fromJson(JsonObject obj) {
 		if (!isReadOnly) {
 			is_dirty = true;
-			return super.jsonIO.setMembersFromJson("", this, obj);
+			return jsonIO.setMembersFromJson("", this, obj);
 		}
 		return false;
 	}
@@ -189,36 +187,51 @@ public class DbDataObject extends Jsonable {
 		values.keySet().addAll(keys);
 	}
 
-	/*
-	 * public String getRepo_name() { return repo_name; }
-	 * 
-	 * public void setRepo_name(String repo_name) { this.repo_name = repo_name;
-	 * }
-	 * 
-	 * public String getSchema() { return schema; }
-	 * 
-	 * public void setSchema(String schema) { this.schema = schema; }
-	 * 
-	 * public String getTable_name() { return table_name; }
-	 * 
-	 * public void setTable_name(String table_name) { this.table_name =
-	 * table_name; }
-	 */
+	@Deprecated
 	public Long getObject_id() {
+		return getObjectId();
+	}
+
+	@Deprecated
+	public void setObject_id(Long object_id) {
+		setObjectId(object_id);
+	}
+
+	/**
+	 * Method to return the unique object id in the Svarog system. If the object
+	 * has not been persisted to the database, the ID shall be 0
+	 * 
+	 * @return The unique object ID in the database
+	 */
+	public Long getObjectId() {
 		return object_id;
 	}
 
-	public void setObject_id(Long object_id) {
+	/**
+	 * Method to set the unique object id in the Svarog system.
+	 * 
+	 * @return The unique object ID in the database
+	 */
+	public void setObjectId(Long objectId) {
 		if (!isReadOnly) {
 			is_dirty = true;
-			this.object_id = object_id;
+			this.object_id = objectId;
 		}
 	}
 
+	/**
+	 * Method to replace the object value map with a new one
+	 * 
+	 * @param newValues
+	 *            The map containing the new values
+	 */
 	public void setValuesMap(LinkedHashMap<SvCharId, Object> newValues) {
 		this.values = newValues;
 	}
 
+	/**
+	 * Method returning a copy of the key map of values
+	 */
 	public LinkedHashMap<SvCharId, Object> getValuesMap() {
 		@SuppressWarnings("unchecked")
 		LinkedHashMap<SvCharId, Object> copy = (LinkedHashMap<SvCharId, Object>) values.clone();
@@ -245,10 +258,20 @@ public class DbDataObject extends Jsonable {
 		}
 	}
 
+	/**
+	 * Method which returns the current version id of object. If the object is
+	 * persistent the version shall be 0
+	 * 
+	 * @return The version id
+	 */
 	public Long getPkid() {
 		return pkid;
 	}
 
+	/**
+	 * Method to set the current version id of object.
+	 * 
+	 */
 	public void setPkid(Long pkid) {
 		if (!isReadOnly) {
 			is_dirty = true;
@@ -256,54 +279,174 @@ public class DbDataObject extends Jsonable {
 		}
 	}
 
+	/**
+	 * Timestamp when the current version of the object has been persisted
+	 * 
+	 * @return Timestamp of DB persistence
+	 */
+	@Deprecated
 	public DateTime getDt_insert() {
+		return getDtInsert();
+	}
+
+	/**
+	 * Timestamp when the current version of the object has been persisted
+	 * 
+	 */
+
+	@Deprecated
+	public void setDt_insert(DateTime dt_insert) {
+		setDtInsert(dt_insert);
+	}
+
+	/**
+	 * Timestamp when the current version of the object has been persisted
+	 * 
+	 * @return Timestamp of DB persistence
+	 */
+	public DateTime getDtInsert() {
 		return dt_insert;
 	}
 
-	public void setDt_insert(DateTime dt_insert) {
+	/**
+	 * Timestamp when the current version of the object has been persisted
+	 * 
+	 * @param dtInsert
+	 *            The timestamp value to be set
+	 * 
+	 */
+
+	public void setDtInsert(DateTime dtInsert) {
 		if (!isReadOnly) {
 			is_dirty = true;
-			this.dt_insert = dt_insert;
+			this.dt_insert = dtInsert;
 		}
 	}
 
+	/**
+	 * Timestamp when the current version of the object has been deleted
+	 * 
+	 */
+	@Deprecated
 	public DateTime getDt_delete() {
+		return getDtDelete();
+	}
+
+	/**
+	 * Method to set the timestamp when the current version of the object has
+	 * been deleted
+	 * 
+	 * @param dtDelete
+	 *            The timestamp value to be set
+	 */
+	@Deprecated
+	public void setDt_delete(DateTime dt_delete) {
+		setDtDelete(dt_delete);
+	}
+
+	/**
+	 * Timestamp when the current version of the object has been deleted
+	 * 
+	 */
+	public DateTime getDtDelete() {
 		return dt_delete;
 	}
 
-	public void setDt_delete(DateTime dt_delete) {
+	/**
+	 * Method to set the timestamp when the current version of the object has
+	 * been deleted
+	 * 
+	 * @param dtDelete
+	 *            The timestamp value to be set
+	 */
+	public void setDtDelete(DateTime dtDelete) {
 		if (!isReadOnly) {
 			is_dirty = true;
-			this.dt_delete = dt_delete;
+			this.dt_delete = dtDelete;
 		}
 	}
 
+	@Deprecated
 	public Long getParent_id() {
+		return getParentId();
+	}
+
+	@Deprecated
+	public void setParent_id(Long parent_id) {
+		setParentId(parent_id);
+	}
+
+	/**
+	 * Method to get the object id of the parent object. The relation is
+	 * reflecting the parent child relationship between the types.
+	 * 
+	 * @return Object id of the parent object
+	 */
+	public Long getParentId() {
 		return parent_id;
 	}
 
-	public void setParent_id(Long parent_id) {
+	/**
+	 * Set the object id of another object as parent.
+	 * 
+	 * @param parentId
+	 *            The object id of the parent
+	 */
+	public void setParentId(Long parentId) {
 		if (!isReadOnly) {
 			is_dirty = true;
-			this.parent_id = parent_id;
+			this.parent_id = parentId;
 		}
 	}
 
+	@Deprecated
 	public Long getObject_type() {
+		return getObjectType();
+	}
+
+	@Deprecated
+	public void setObject_type(Long object_type) {
+		setObjectType(object_type);
+	}
+
+	/**
+	 * Return the object id of the object type
+	 * 
+	 * @return Object id of the type
+	 */
+	public Long getObjectType() {
 		return object_type;
 	}
 
-	public void setObject_type(Long object_type) {
+	/**
+	 * Set the type id of the object. The type id corresponds to the object id
+	 * of the table
+	 * 
+	 * @param objectType
+	 *            object id of the type
+	 */
+	public void setObjectType(Long objectType) {
 		if (!isReadOnly) {
 			is_dirty = true;
-			this.object_type = object_type;
+			this.object_type = objectType;
 		}
 	}
 
+	/**
+	 * Method to return the current status of the object
+	 * 
+	 * @return The string value of the status
+	 */
 	public String getStatus() {
 		return status;
 	}
 
+	/**
+	 * Method to set the status of the object
+	 * 
+	 * @param status
+	 *            String status of the object
+	 */
 	public void setStatus(String status) {
 		if (!isReadOnly) {
 			is_dirty = true;
@@ -311,44 +454,113 @@ public class DbDataObject extends Jsonable {
 		}
 	}
 
+	@Deprecated
 	public Long getUser_id() {
+		return getUserId();
+	}
+
+	@Deprecated
+	public void setUser_id(Long user_id) {
+		setUserId(user_id);
+	}
+
+	/**
+	 * Method to return the object id of the user which saved the object
+	 * 
+	 * @return
+	 */
+	public Long getUserId() {
 		return user_id;
 	}
 
-	public void setUser_id(Long user_id) {
+	/**
+	 * Method to set the object id of the user which saved the last version of
+	 * the object
+	 * 
+	 * @param userId
+	 *            The object id of the user object
+	 */
+	public void setUserId(Long userId) {
 		if (!isReadOnly) {
 			is_dirty = true;
-			this.user_id = user_id;
+			this.user_id = userId;
 		}
 	}
 
+	@Deprecated
 	public boolean getIs_dirty() {
+		return getIsDirty();
+	}
+
+	@Deprecated
+	public void setIs_dirty(boolean is_dirty) {
+		setIsDirty(is_dirty);
+	}
+
+	/**
+	 * Method to check if the object has been modified after it was fetched from
+	 * the database
+	 * 
+	 * @return Flag if the object was changed or not
+	 */
+	public boolean getIsDirty() {
 		return is_dirty;
 	}
 
-	public void setIs_dirty(boolean is_dirty) {
+	/**
+	 * Method to set the dirty flag (object has been modified after it was
+	 * fetched from the database)
+	 * 
+	 * @param isDirty
+	 *            Flag if the object was changed or not
+	 */
+	public void setIsDirty(boolean isDirty) {
 		if (!isReadOnly) {
-			this.is_dirty = is_dirty;
+			this.is_dirty = isDirty;
 		}
 	}
 
+	/**
+	 * Return a flag is the object is read-only
+	 * 
+	 * @return Flag if the object is read-only
+	 */
 	public boolean isReadOnly() {
 		return isReadOnly;
 	}
 
+	/**
+	 * Return a flag is the object type is geometry type
+	 * 
+	 * @return Flag if the object is geometry type
+	 */
 	public boolean isGeometryType() {
 		return isGeometryType;
 	}
 
-	public void setGeometryType(boolean isGeometryType) {
+	/**
+	 * Return a flag is the object type is geometry type
+	 * 
+	 * @return Flag if the object is geometry type
+	 */
+	void setIsGeometryType(boolean isGeometryType) {
 		this.isGeometryType = isGeometryType;
+		;
 	}
 
+	/**
+	 * Set flag that the object has loaded the geometry from the database
+	 * 
+	 */
 	public boolean getHasGeometry() {
 		return hasGeometry;
 	}
 
-	public void setHasGeometry(boolean hasGeometry) {
+	/**
+	 * Set flag that the object has loaded the geometry from the database
+	 * 
+	 */
+	void setHasGeometry(boolean hasGeometry) {
 		this.hasGeometry = hasGeometry;
 	}
 

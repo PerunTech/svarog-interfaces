@@ -19,19 +19,21 @@ import com.prtech.svarog.svCONST;
 
 /**
  * Interface for implementing JSON serialisation
+ * 
  * @author PR01
  *
  */
 public abstract class Jsonable {
-	
+
 	/**
 	 * An instance of MemberJson object which is doing the JSON serialisation
 	 */
-	JsonIO jsonIO = new JsonIO();
+	static JsonIO jsonIO = new JsonIO();
+
 	/**
 	 * A getter function for the JsonIO instance. Will be removed in 3.0
 	 * 
-	 * @return instance of 
+	 * @return instance of
 	 */
 	@Deprecated
 	public JsonIO getMembersJson() {
@@ -49,53 +51,50 @@ public abstract class Jsonable {
 	}
 
 	/**
-	 * Quick access functions for populating the Object from JSON
-	 * a wrapper for this.memberJson.setMembersFromJson("", this, obj);
+	 * Quick access functions for populating the Object from JSON a wrapper for
+	 * this.memberJson.setMembersFromJson("", this, obj);
+	 * 
 	 * @return TODO
 	 */
-	public Boolean fromJson(JsonObject obj)
-	{
+	public Boolean fromJson(JsonObject obj) {
 		return this.jsonIO.setMembersFromJson("", this, obj);
 	}
+
 	/**
-	 * Quick access functions for creating a JsonObject from the implementing class instance
-	 * a wrapper for this.memberJson.getMembersToJson("", this);
+	 * Quick access functions for creating a JsonObject from the implementing
+	 * class instance a wrapper for this.memberJson.getMembersToJson("", this);
 	 */
-	public JsonObject toJson()
-	{
-		return this.jsonIO.getMembersToJson("", this,null);
+	public JsonObject toJson() {
+		return this.jsonIO.getMembersToJson("", this, null);
 	}
 
 	/**
-	 * Quick access functions for populating the Object from JSON
-	 * a wrapper for this.memberJson.setMembersFromJson("", this, obj);
+	 * Quick access functions for populating the Object from JSON a wrapper for
+	 * this.memberJson.setMembersFromJson("", this, obj);
+	 * 
 	 * @return TODO
 	 */
-	public Boolean fromSimpleJson(JsonObject obj)
-	{
-		return this.jsonIO.setMembersFromJson("", this, obj,true);
+	public Boolean fromSimpleJson(JsonObject obj) {
+		return jsonIO.setMembersFromJson("", this, obj, true);
 	}
+
 	/**
-	 * Quick access functions for creating a JsonObject from the implementing class instance
-	 * a wrapper for this.memberJson.getMembersToJson("", this);
+	 * Quick access functions for creating a JsonObject from the implementing
+	 * class instance a wrapper for this.memberJson.getMembersToJson("", this);
 	 */
-	public JsonObject toSimpleJson()
-	{
-		return this.jsonIO.getMembersToJson("", this,null,true);
+	public JsonObject toSimpleJson() {
+		return jsonIO.getMembersToJson("", this, null, true);
 	}
-	
-	public JsonObject toTabularJson(DbDataArray objTypeDbt, DbDataArray objTypeDbf,
-			JsonObject exParams)
-	{
-		return this.jsonIO.getTabularJson("", this, objTypeDbt, objTypeDbf, exParams, null);
+
+	public JsonObject toTabularJson(DbDataArray objTypeDbt, DbDataArray objTypeDbf, JsonObject exParams) {
+		return jsonIO.getTabularJson("", this, objTypeDbt, objTypeDbf, exParams, null);
 
 	}
 
-	public JsonObject toTabularJson(DbDataArray objTypeDbt, DbDataArray objTypeDbf,
-			JsonObject exParams, ISvCodeList codeList)
-	{
-		return this.jsonIO.getTabularJson("", this, objTypeDbt, objTypeDbf, exParams, codeList);
+	public JsonObject toTabularJson(DbDataArray objTypeDbt, DbDataArray objTypeDbf, JsonObject exParams,
+			ISvCodeList codeList) {
+		return jsonIO.getTabularJson("", this, objTypeDbt, objTypeDbf, exParams, codeList);
 
 	}
-	
+
 }
