@@ -1,0 +1,25 @@
+stages:
+  - build
+  - mvn_install
+
+before_script:
+  - git reset --hard $CI_COMMIT_SHA
+  - git clean -df
+  - git stash
+  - git pull origin $CI_COMMIT_SHA
+  
+svarog-jts-io-build:
+  stage: build
+  script:  
+    - pwd
+    - mvn clean compile
+
+svarog-jts-io-install:
+  stage: mvn_install
+  script:  
+    - pwd
+    - mvn install
+  only:
+    - master
+    - staging
+    - dev
