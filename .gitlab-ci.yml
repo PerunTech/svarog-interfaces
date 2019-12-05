@@ -8,13 +8,13 @@ before_script:
   - git stash
   - git pull origin $CI_COMMIT_SHA
   
-svarog-jts-io-build:
+svarog-interfaces-build:
   stage: build
   script:  
     - pwd
     - mvn clean compile
 
-svarog-jts-io-install:
+svarog-interfaces-install:
   stage: mvn_install
   script:  
     - pwd
