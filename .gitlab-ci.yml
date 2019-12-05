@@ -1,5 +1,6 @@
 stages:
   - build
+  - code_analysis
   - mvn_install
 
 before_script:
@@ -13,6 +14,16 @@ svarog-interfaces-build:
   script:  
     - pwd
     - mvn clean compile
+
+svarog-interfaces-sonarqube:
+  stage: code_analysis
+  script:  
+    - pwd
+    - mvn sonar:sonar
+  only:
+    - master
+    - staging
+    - dev
 
 svarog-interfaces-install:
   stage: mvn_install
