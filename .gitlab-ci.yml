@@ -20,10 +20,6 @@ svarog-interfaces-sonarqube:
   script:  
     - pwd
     - mvn sonar:sonar
-  only:
-    - master
-    - staging
-    - dev
 
 svarog-interfaces-install:
   stage: mvn_install
