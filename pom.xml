@@ -79,26 +79,6 @@
 			<artifactId>joda-time</artifactId>
 			<version>2.3</version>
 		</dependency>
-		<dependency>
-			<groupId>org.sonarsource.scanner.maven</groupId>
-			<artifactId>sonar-maven-plugin</artifactId>
-			<version>3.2</version>
-		</dependency>
 	</dependencies>
-	<profiles>
-		<profile>
-			<id>sonar</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<!-- Optional URL to server. Default value is http://localhost:9000 -->
-				<sonar.host.url>
-					https://sonarqube.prtech.mk/
-				</sonar.host.url>
-				<sonar.login>a02003f1f8f90382d7570b57a85c00c38132f85f</sonar.login>
-			</properties>
-		</profile>
-	</profiles>
 	<description>Library containing all shared Svarog structures, used by libraries outside of svarog, which don't need the full svarog to operate.</description>
 </project>
