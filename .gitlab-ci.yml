@@ -19,7 +19,7 @@ svarog-interfaces-sonarqube:
   stage: code_analysis
   script:  
     - pwd
-    - mvn sonar:sonar -Dsonar.analysis.mode = “preview”
+    - mvn sonar:sonar -Dsonar.analysis.mode="preview"
 
 svarog-interfaces-install:
   stage: mvn_install
