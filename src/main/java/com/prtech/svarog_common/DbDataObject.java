@@ -542,8 +542,10 @@ public class DbDataObject extends Jsonable {
 	 * Return a flag is the object type is geometry type
 	 * 
 	 * @return Flag if the object is geometry type
+	 * @deprecated
 	 */
-	void setIsGeometryType(boolean isGeometryType) {
+	@Deprecated
+	public void setGeometryType(boolean isGeometryType) {
 		this.isGeometryType = isGeometryType;
 		;
 	}
@@ -558,9 +560,10 @@ public class DbDataObject extends Jsonable {
 
 	/**
 	 * Set flag that the object has loaded the geometry from the database
-	 * 
+	 * @deprecated
 	 */
-	void setHasGeometry(boolean hasGeometry) {
+	@Deprecated
+	public void setHasGeometry(boolean hasGeometry) {
 		this.hasGeometry = hasGeometry;
 	}
 
