@@ -51,6 +51,6 @@ public class DboFactory {
 	 *            isGeometryType=true
 	 */
 	public static void dboIsGeometryType(DbDataObject dbo) {
-		dbo.setIsGeometryType(true);
+		dbo.setGeometryType(true);
 	}
 }
