@@ -98,7 +98,8 @@ public interface ISvDatabaseIO {
 	 * @param schema
 	 *            The database schema in which the repo table resides
 	 * @param repoName
-	 *            The name of the repo table in which the objects shall be inserted
+	 *            The name of the repo table in which the objects shall be
+	 *            inserted
 	 * @return An instance of Prepared Statement ready for execution
 	 * @throws SQLException
 	 */
@@ -234,10 +235,36 @@ public interface ISvDatabaseIO {
 	 */
 	ResourceBundle getSQLKeyWordsBundle();
 
-	// Class<?> getGeomSQLType();
+	/**
+	 * Internal Method of the Database handler, which will be invoked BEFORE any
+	 * Svarog UPGRADE/INSTALL takes place. The method can stop the installation
+	 * by throwing an exception
+	 * 
+	 * @param conn
+	 *            Valid JDBC connection against which the queries shall be
+	 *            executed
+	 * @param schema
+	 *            The default schema name as configured in the svarog.parameters
+	 * @returns A string message that will be printed as INFO in the install
+	 *          process
+	 * @throws Exception
+	 *             If exception is thrown, the installation is aborted
+	 */
+	String beforeInstall(Connection conn, String schema) throws Exception;
 
-	// Object getGeomFromJson(Object jsonText);
-
-	// Object getJsonFromGeom(Object geometry);
+	/**
+	 * Internal Method of the Database handler, which will be invoked AFTER any
+	 * Svarog UPGRADE/INSTALL takes place. It can be used to validate the
+	 * install or do some post processing
+	 * 
+	 * @param conn
+	 *            Valid JDBC connection against which the queries shall be
+	 *            executed
+	 * @param schema
+	 *            The default schema name as configured in the svarog.parameters
+	 * @returns A string message that will be printed as INFO in the install
+	 *          process
+	 */
+	String afterInstall(Connection conn, String schema);
 
 }
