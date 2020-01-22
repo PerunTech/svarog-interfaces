@@ -46,20 +46,6 @@ public final class svCONST {
 	public static final String NULL_GEOMETRY_ACL = "system.null_geometry";
 	public static final String INSECURE_SQL_ACL = "system.insecure_sql";
 
-	public static final String labelsFilePrefix = "20. master_labels_";
-	public static final String codesFile = "30. master_codes.json";
-	public static final String usersFile = "999. default_users.json";
-	public static final String masterRecordsPath = "records/";
-	public static final String masterDbtPath = "config/";
-	public static final String masterSDIPath = "sdi/";
-	public static final String masterLabelsPath = "labels/";
-	public static final String masterSecurityPath = "security/";
-	public static final String masterCodesPath = "com/prtech/svarog/codes/";
-	public static final String fileListName = "file_list.txt";
-	public static final String sdiGridFile = "grid.json";
-
-	public static final String aclFile = "acl.json";
-	public static final String aclSidFile = "acl_sid.json";
 
 	// finally the list of repofields is in svarog
 	// WARNING the values must be all UPPER CASE

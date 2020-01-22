@@ -58,6 +58,9 @@ public interface ISvConfiguration {
 	 * @param conn
 	 *            Valid JDBC connection against which the queries shall be
 	 *            executed
+	 * @param core
+	 *            Instance of a valid SvCore with system privileges (if
+	 *            available)
 	 * @param schema
 	 *            The default schema name as configured in the svarog.parameters
 	 * @returns A string message that will be printed as INFO in the install
@@ -65,7 +68,7 @@ public interface ISvConfiguration {
 	 * @throws Exception
 	 *             If exception is thrown, the installation is aborted
 	 */
-	String beforeSchemaUpdate(Connection conn, String schema) throws Exception;
+	String beforeSchemaUpdate(Connection conn, ISvCore core, String schema) throws Exception;
 
 	/**
 	 * After the schema updates have finished, the Labels upgrade is performed
@@ -77,6 +80,9 @@ public interface ISvConfiguration {
 	 * @param conn
 	 *            Valid JDBC connection against which the queries shall be
 	 *            executed
+	 * @param core
+	 *            Instance of a valid SvCore with system privileges (if
+	 *            available)
 	 * @param schema
 	 *            The default schema name as configured in the svarog.parameters
 	 * @returns A string message that will be printed as INFO in the install
@@ -84,7 +90,7 @@ public interface ISvConfiguration {
 	 * @throws Exception
 	 *             If exception is thrown, the installation is aborted
 	 */
-	String beforeLabelsUpdate(Connection conn, String schema) throws Exception;
+	String beforeLabelsUpdate(Connection conn, ISvCore core, String schema) throws Exception;
 
 	/**
 	 * After the Label updates have finished, the Codes update is performed
@@ -96,6 +102,9 @@ public interface ISvConfiguration {
 	 * @param conn
 	 *            Valid JDBC connection against which the queries shall be
 	 *            executed
+	 * @param core
+	 *            Instance of a valid SvCore with system privileges (if
+	 *            available)
 	 * @param schema
 	 *            The default schema name as configured in the svarog.parameters
 	 * @returns A string message that will be printed as INFO in the install
@@ -103,7 +112,7 @@ public interface ISvConfiguration {
 	 * @throws Exception
 	 *             If exception is thrown, the installation is aborted
 	 */
-	String beforeCodesUpdate(Connection conn, String schema) throws Exception;
+	String beforeCodesUpdate(Connection conn, ISvCore core, String schema) throws Exception;
 
 	/**
 	 * After the Code updates have finished, the Object Types update is
@@ -117,6 +126,9 @@ public interface ISvConfiguration {
 	 * @param conn
 	 *            Valid JDBC connection against which the queries shall be
 	 *            executed
+	 * @param core
+	 *            Instance of a valid SvCore with system privileges (if
+	 *            available)
 	 * @param schema
 	 *            The default schema name as configured in the svarog.parameters
 	 * @returns A string message that will be printed as INFO in the install
@@ -124,7 +136,7 @@ public interface ISvConfiguration {
 	 * @throws Exception
 	 *             If exception is thrown, the installation is aborted
 	 */
-	String beforeTypesUpdate(Connection conn, String schema) throws Exception;
+	String beforeTypesUpdate(Connection conn, ISvCore core, String schema) throws Exception;
 
 	/**
 	 * After the Object Type updates have finished, the Link Types update is
@@ -137,6 +149,9 @@ public interface ISvConfiguration {
 	 * @param conn
 	 *            Valid JDBC connection against which the queries shall be
 	 *            executed
+	 * @param core
+	 *            Instance of a valid SvCore with system privileges (if
+	 *            available)
 	 * @param schema
 	 *            The default schema name as configured in the svarog.parameters
 	 * @returns A string message that will be printed as INFO in the install
@@ -144,7 +159,7 @@ public interface ISvConfiguration {
 	 * @throws Exception
 	 *             If exception is thrown, the installation is aborted
 	 */
-	String beforeLinkTypesUpdate(Connection conn, String schema) throws Exception;
+	String beforeLinkTypesUpdate(Connection conn, ISvCore core, String schema) throws Exception;
 
 	/**
 	 * After the Link Type updates have finished, the ACL update is performed
@@ -157,6 +172,9 @@ public interface ISvConfiguration {
 	 * @param conn
 	 *            Valid JDBC connection against which the queries shall be
 	 *            executed
+	 * @param core
+	 *            Instance of a valid SvCore with system privileges (if
+	 *            available)
 	 * @param schema
 	 *            The default schema name as configured in the svarog.parameters
 	 * @returns A string message that will be printed as INFO in the install
@@ -164,7 +182,7 @@ public interface ISvConfiguration {
 	 * @throws Exception
 	 *             If exception is thrown, the installation is aborted
 	 */
-	String beforeAclUpdate(Connection conn, String schema) throws Exception;
+	String beforeAclUpdate(Connection conn, ISvCore core, String schema) throws Exception;
 
 	/**
 	 * After the ACL updates have finished, the update of Sid<->ACL
@@ -176,6 +194,9 @@ public interface ISvConfiguration {
 	 * @param conn
 	 *            Valid JDBC connection against which the queries shall be
 	 *            executed
+	 * @param core
+	 *            Instance of a valid SvCore with system privileges (if
+	 *            available)            
 	 * @param schema
 	 *            The default schema name as configured in the svarog.parameters
 	 * @returns A string message that will be printed as INFO in the install
@@ -183,7 +204,7 @@ public interface ISvConfiguration {
 	 * @throws Exception
 	 *             If exception is thrown, the installation is aborted
 	 */
-	String beforeSidAclUpdate(Connection conn, String schema) throws Exception;
+	String beforeSidAclUpdate(Connection conn, ISvCore core, String schema) throws Exception;
 
 	/**
 	 * After all Svarog upgrade stages have passed, the upgrade will be
@@ -193,6 +214,9 @@ public interface ISvConfiguration {
 	 * @param conn
 	 *            Valid JDBC connection against which the queries shall be
 	 *            executed
+	 * @param core
+	 *            Instance of a valid SvCore with system privileges (if
+	 *            available)
 	 * @param schema
 	 *            The default schema name as configured in the svarog.parameters
 	 * @returns A string message that will be printed as INFO in the install
@@ -200,6 +224,6 @@ public interface ISvConfiguration {
 	 * @throws Exception
 	 *             If exception is thrown, the installation is aborted
 	 */
-	String afterUpdate(Connection conn, String schema) throws Exception;
+	String afterUpdate(Connection conn, ISvCore core, String schema) throws Exception;
 
 }
