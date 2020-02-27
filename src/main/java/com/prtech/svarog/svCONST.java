@@ -46,7 +46,6 @@ public final class svCONST {
 	public static final String NULL_GEOMETRY_ACL = "system.null_geometry";
 	public static final String INSECURE_SQL_ACL = "system.insecure_sql";
 
-
 	// finally the list of repofields is in svarog
 	// WARNING the values must be all UPPER CASE
 	public static ArrayList<String> repoFieldNames = new ArrayList<String>(Arrays.asList("PKID", "META_PKID",
@@ -101,6 +100,10 @@ public final class svCONST {
 	public static final long OBJECT_TYPE_SEQUENCE = 4;
 	public static final long OBJECT_TYPE_SECURITY_LOG = 5;
 
+	/**
+	 * Object ID Constant of the object which describes the cluster coordinator.
+	 */
+	public static final long CLUSTER_COORDINATOR_ID = 48;
 	public static final long OBJECT_ID_HEADQUARTER = 49;
 	// Object types which are managed via saveObject
 	public static final long MIN_WRITEABLE_OBJID = 50;
@@ -141,7 +144,7 @@ public final class svCONST {
 	public static final long OBJECT_TYPE_JOB_TASK = MIN_WRITEABLE_OBJID + 26;
 	@Deprecated
 	public static final long OBJECT_TYPE_JOB_OBJECT = MIN_WRITEABLE_OBJID + 27;
-	
+
 	public static final long OBJECT_TYPE_PARAM_TYPE = MIN_WRITEABLE_OBJID + 28;
 	public static final long OBJECT_TYPE_PARAM = MIN_WRITEABLE_OBJID + 29;
 	public static final long OBJECT_TYPE_PARAM_VALUE = MIN_WRITEABLE_OBJID + 30;
@@ -168,21 +171,23 @@ public final class svCONST {
 	public static final long OBJECT_TYPE_SDI_GEOJSONFILE = MIN_WRITEABLE_OBJID + 44;
 	public static final long OBJECT_TYPE_SDI_DESCRIPTOR = MIN_WRITEABLE_OBJID + 45;
 	public static final long OBJECT_TYPE_SDI_SERVICE = MIN_WRITEABLE_OBJID + 46;
-	
-	//Object types which are used in Svarog-Batch
-	//ID: OBJECT_TYPE_BATCH_JOB_TYPE for table name BATCH_JOB_TYPE
+
+	// Object types which are used in Svarog-Batch
+	// ID: OBJECT_TYPE_BATCH_JOB_TYPE for table name BATCH_JOB_TYPE
 	public static final long OBJECT_TYPE_BATCH_JOB_TYPE = MIN_WRITEABLE_OBJID + 47;
-	//ID: OBJECT_TYPE_BATCH_JOB for table name BATCH_JOB
+	// ID: OBJECT_TYPE_BATCH_JOB for table name BATCH_JOB
 	public static final long OBJECT_TYPE_BATCH_JOB = MIN_WRITEABLE_OBJID + 48;
-	//ID: OBJECT_TYPE_BATCH_JOB_TEMPLATE for table name BATCH_JOB_TEMPLATE
+	// ID: OBJECT_TYPE_BATCH_JOB_TEMPLATE for table name BATCH_JOB_TEMPLATE
 	public static final long OBJECT_TYPE_BATCH_JOB_TEMPLATE = MIN_WRITEABLE_OBJID + 49;
-	//ID: OBJECT_TYPE_BATCH_JOB_PARAM for table name BATCH_JOB_PARAM
+	// ID: OBJECT_TYPE_BATCH_JOB_PARAM for table name BATCH_JOB_PARAM
 	public static final long OBJECT_TYPE_BATCH_JOB_PARAM = MIN_WRITEABLE_OBJID + 50;
-	//ID: OBJECT_TYPE_BATCH_JOB_PARAM for table name BATCH_JOB_PARAM
+	// ID: OBJECT_TYPE_BATCH_JOB_PARAM for table name BATCH_JOB_PARAM
 	public static final long OBJECT_TYPE_BATCH_JOB_CONFIG = MIN_WRITEABLE_OBJID + 51;
-	//ID: OBJECT_TYPE_EXECUTORS
+	// ID: OBJECT_TYPE_EXECUTORS
 	public static final long OBJECT_TYPE_EXECUTORS = MIN_WRITEABLE_OBJID + 52;
-	
+
+	public static final long OBJECT_TYPE_CLUSTER = MIN_WRITEABLE_OBJID + 53;
+
 	/* SVAROG WELL KNOWN SECURITY IDs */
 	public static final String SID_NOBODY_UID = "S-1-0-0";
 	public static final String SID_EVERYONE_UID = "S-1-1-0";
@@ -205,7 +210,6 @@ public final class svCONST {
 	public static DbDataObject usersGroup = getUsersGroup();
 	public static DbDataObject adminsGroup = getAdminsGroup();
 
-	
 	private static DbDataObject getServiceUser() {
 		DbDataObject serviceUser = new DbDataObject();
 		serviceUser.setObject_id(svCONST.OBJECT_USER_SERVICE);

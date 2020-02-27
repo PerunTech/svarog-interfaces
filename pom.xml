@@ -13,7 +13,7 @@
 
 	<groupId>svarog-interfaces</groupId>
 	<artifactId>svarog-interfaces</artifactId>
-	<version>3.0.3</version>
+	<version>3.0.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>svarog-interfaces</name>
