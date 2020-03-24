@@ -159,6 +159,10 @@ public class DbDataArray extends Jsonable {
 	public int size() {
 		return items.size();
 	}
+	
+	public Boolean isEmpty() {
+		return items.isEmpty();
+	}
 
 	public DbDataObject get(int index) {
 		return items.get(index);
