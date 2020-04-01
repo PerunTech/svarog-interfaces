@@ -188,6 +188,10 @@ public final class svCONST {
 
 	public static final long OBJECT_TYPE_CLUSTER = MIN_WRITEABLE_OBJID + 53;
 
+	public static final long OBJECT_TYPE_EXECUTOR_PACK = MIN_WRITEABLE_OBJID + 54;
+	
+	public static final long OBJECT_TYPE_EXECUTOR_GROUP = MIN_WRITEABLE_OBJID + 55;
+
 	/* SVAROG WELL KNOWN SECURITY IDs */
 	public static final String SID_NOBODY_UID = "S-1-0-0";
 	public static final String SID_EVERYONE_UID = "S-1-1-0";
