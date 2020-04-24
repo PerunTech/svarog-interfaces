@@ -216,7 +216,7 @@ public final class svCONST {
 
 	private static DbDataObject getServiceUser() {
 		DbDataObject serviceUser = new DbDataObject();
-		serviceUser.setObject_id(svCONST.OBJECT_USER_SERVICE);
+		serviceUser.setObjectId(svCONST.OBJECT_USER_SERVICE);
 		serviceUser.setVal("USER_NAME", "USER_SERVICE");
 		DboFactory.makeDboReadOnly(serviceUser);
 		return serviceUser;
@@ -224,7 +224,7 @@ public final class svCONST {
 
 	private static DbDataObject getSystemUser() {
 		DbDataObject systemUser = new DbDataObject();
-		systemUser.setObject_id(svCONST.OBJECT_USER_SYSTEM);
+		systemUser.setObjectId(svCONST.OBJECT_USER_SYSTEM);
 		systemUser.setVal("USER_NAME", "USER_SYSTEM");
 		DboFactory.makeDboReadOnly(systemUser);
 		return systemUser;
@@ -232,8 +232,8 @@ public final class svCONST {
 
 	private static DbDataObject getUsersGroup() {
 		DbDataObject dboUserGroup = new DbDataObject();
-		dboUserGroup.setObject_type(svCONST.OBJECT_TYPE_GROUP);
-		dboUserGroup.setObject_id(svCONST.SID_USERS);
+		dboUserGroup.setObjectType(svCONST.OBJECT_TYPE_GROUP);
+		dboUserGroup.setObjectId(svCONST.SID_USERS);
 		dboUserGroup.setVal("GROUP_TYPE", "USERS");
 		dboUserGroup.setVal("GROUP_UID", svCONST.SID_USERS_UID);
 		dboUserGroup.setVal("GROUP_NAME", "USERS");
@@ -245,8 +245,8 @@ public final class svCONST {
 
 	private static DbDataObject getAdminsGroup() {
 		DbDataObject dboUserGroup = new DbDataObject();
-		dboUserGroup.setObject_type(svCONST.OBJECT_TYPE_GROUP);
-		dboUserGroup.setObject_id(svCONST.SID_ADMINISTRATORS);
+		dboUserGroup.setObjectType(svCONST.OBJECT_TYPE_GROUP);
+		dboUserGroup.setObjectId(svCONST.SID_ADMINISTRATORS);
 		dboUserGroup.setVal("GROUP_TYPE", "ADMINISTRATORS");
 		dboUserGroup.setVal("GROUP_UID", svCONST.SID_ADMINISTRATORS_UID);
 		dboUserGroup.setVal("GROUP_NAME", "ADMINISTRATORS");
