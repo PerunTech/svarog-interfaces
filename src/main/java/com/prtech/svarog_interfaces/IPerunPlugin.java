@@ -59,7 +59,7 @@ public interface IPerunPlugin {
 	String getLabelCode();
 
 	/**
-	 * Permission code to be used for authorisation purposes. 
+	 * Permission code to be used for authorisation purposes.
 	 * 
 	 * @return Permission code to be mapped to svarog permissions
 	 */
@@ -80,9 +80,12 @@ public interface IPerunPlugin {
 	 * @param existingMenu
 	 *            The existing menu configuration from the database is passed as
 	 *            reference
+	 * @param core
+	 *            The SvCore instance used to validate permissions
+	 * 
 	 * @return The menu configuration for the plugin
 	 */
-	JsonObject getMenu(JsonObject existingMenu);
+	JsonObject getMenu(JsonObject existingMenu, ISvCore core);
 
 	/**
 	 * If this flag is set to true, svarog use the return value of the
@@ -103,9 +106,11 @@ public interface IPerunPlugin {
 	 * @param existingMenu
 	 *            The existing menu configuration from the database is passed as
 	 *            reference
+	 * @param core
+	 *            The SvCore instance used to validate permissions
 	 * @return The configuration of the context menu for the plugin
 	 */
-	JsonObject getContextMenu(HashMap<String, String> contextMap, JsonObject existingMenu);
+	JsonObject getContextMenu(HashMap<String, String> contextMap, JsonObject existingMenu, ISvCore core);
 
 	/**
 	 * If this flag is set to true, svarog use the return value of the
