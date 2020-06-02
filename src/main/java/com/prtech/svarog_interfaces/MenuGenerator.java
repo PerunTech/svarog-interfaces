@@ -72,7 +72,7 @@ public abstract class MenuGenerator {
 			return null;
 		}
 		try {
-			JsonObject getObject = (JsonObject) this.initialJsonObject.get("perun.otsc.module_menu.navigation");
+			JsonObject getObject = (JsonObject) this.initialJsonObject.get(moduleCode);
 			result = (JsonArray) getObject.get(this.menuCode);
 			JsonObject tempObj;
 			for (int i = 0; i < result.size(); i++) {
