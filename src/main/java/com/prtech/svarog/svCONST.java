@@ -190,7 +190,7 @@ public final class svCONST {
 
 	public static final long OBJECT_TYPE_EXECUTOR_PACK = MIN_WRITEABLE_OBJID + 54;
 	
-	public static final long OBJECT_TYPE_EXECUTOR_GROUP = MIN_WRITEABLE_OBJID + 55;
+	public static final long OBJECT_TYPE_EXECPACK_ITEM = MIN_WRITEABLE_OBJID + 55;
 	
 	public static final long OBJECT_TYPE_PERUN_PLUGIN = MIN_WRITEABLE_OBJID + 56;
 
