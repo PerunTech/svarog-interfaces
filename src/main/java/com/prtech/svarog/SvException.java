@@ -176,7 +176,7 @@ public class SvException extends Exception {
 			obj.add("Config_Data", ((Jsonable) this.getConfigData()).toJson());
 		else
 			obj.addProperty("Config_Data", getConfigText());
-		obj.add("User_Data", this.getUserData().toJson());
+		obj.add("User_Data", (this.getUserData()!=null?this.getUserData().toJson():new JsonObject()));
 		return obj;
 
 	}
