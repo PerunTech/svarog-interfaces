@@ -19,8 +19,13 @@ import com.google.gson.JsonObject;
 import com.prtech.svarog_common.DbDataObject;
 import com.prtech.svarog_common.Jsonable;
 import com.prtech.svarog_interfaces.II18n;
+
 /**
- * Svarog specific exception class. 
+ * Svarog specific exception class. The SvException class unifies Svarog runtime
+ * exception handling. It provides a label code which can be easily localised to
+ * give translated error messages. It shall associate the user which caused the
+ * exception as well as the related context such as Configuration or User data
+ * 
  * @author XPS13
  *
  */
@@ -30,97 +35,191 @@ public class SvException extends Exception {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	static II18n i18n=null;
-	static String userLocale = null;
-	
-	DbDataObject instanceUser=null;
-	Jsonable userData=null;
-	Object configData=null;
-	
-	DateTime timeStamp=new DateTime();
-	
-	private String i18nLabelCode;
-	
 
-	public SvException(String svarogLabelCode, DbDataObject instanceUser)
-	{
+	static II18n i18n = null;
+
+	String userLocale = null;
+
+	DbDataObject instanceUser = null;
+	Jsonable userData = null;
+	Object configData = null;
+
+	DateTime timeStamp = new DateTime();
+
+	private String i18nLabelCode;
+
+	public SvException(String svarogLabelCode, DbDataObject instanceUser) {
 		super(svarogLabelCode);
-		this.i18nLabelCode=svarogLabelCode;
-		if(instanceUser==null)
-			this.instanceUser=svCONST.systemUser;
+		this.i18nLabelCode = svarogLabelCode;
+		if (instanceUser == null)
+			this.instanceUser = svCONST.systemUser;
 		else
-			this.instanceUser=instanceUser;
+			this.instanceUser = instanceUser;
 	}
 
-	/** 
-	 * Default constructor to be used with the Svarog Exception. 
+	/**
+	 * Default constructor to be used with the Svarog Exception.
+	 * 
 	 * @param svarogLabelCode
 	 */
-	public SvException(String svarogLabelCode, DbDataObject instanceUser, Throwable cause)
-	{
-		this(svarogLabelCode,instanceUser);
+	public SvException(String svarogLabelCode, DbDataObject instanceUser, Throwable cause) {
+		this(svarogLabelCode, instanceUser);
 		initCause(cause);
-		this.i18nLabelCode=svarogLabelCode;
-		this.instanceUser=instanceUser;
-		
-	}
-
-	
-	public String getFormattedMessage()
-	{
-		String errMessage = "ERROR_ID:" + this.getInstanceUser().getVal("USER_NAME") + "."
-				+ this.getTimeStamp().getMillis() + ", \n";
-		errMessage += "Error Code:" + this.getLabelCode()+ ", \n";
-		errMessage += "Error Message:" + (i18n!=null?i18n.getI18nText(userLocale, this.getLabelCode()):this.getLabelCode())+ ", \n";
-		String confStr = (this.getConfigData() != null ? (this.getConfigData() instanceof  Jsonable?((Jsonable)this.getConfigData()).toJson().toString():this.getConfigData().toString()): "N/A. ");
-		errMessage += "Config Data:" + confStr + ", \n";
-		errMessage += "User Data:" + (this.getUserData() != null ? this.getUserData().toJson() : "N/A. ")+ "";
-		return errMessage;
+		this.i18nLabelCode = svarogLabelCode;
+		this.instanceUser = instanceUser;
 
 	}
-	
-	public String getJsonMessage()
-	{
-		JsonObject obj = new JsonObject();
-		obj.addProperty("ERROR_ID", this.getInstanceUser().getVal("USER_NAME") + "."
-				+ this.getTimeStamp().getMillis());
-		obj.addProperty("Label_Code", this.getLabelCode());
-		obj.addProperty("Error_Message", (i18n!=null?i18n.getI18nText(userLocale, this.getLabelCode()):this.getLabelCode()));
-		String confStr = (this.getConfigData() != null ? (this.getConfigData() instanceof  Jsonable?((Jsonable)this.getConfigData()).toJson().toString():this.getConfigData().toString()): "N/A. ");
-		obj.addProperty("Config_Data", confStr);
-		obj.addProperty("User_Data" , (String) (this.getUserData() != null ? this.getUserData().toJson().toString() : "N/A. "));
-		return obj.toString();
+
+	public String getMessage() {
+		return getFormattedMessage(false);
+
+	}
+
+	public String getExceptionId() {
+		return this.getInstanceUser().getVal("USER_NAME") + "." + this.getTimeStamp().getMillis();
 
 	}
 
 	/**
-	 * Constructor that accepts a label code as well as DbDataObject to support with debugging.
+	 * Method to return localised text based on the label code and the available
+	 * I18n object. If no I18n is available it will return the label code
+	 * 
+	 * @return Localised text message or label code
+	 */
+	public String getLocalisedText() {
+		String text;
+		if (i18n != null) {
+			if (userLocale != null)
+				text = i18n.getI18nText(userLocale, this.getLabelCode());
+			else
+				text = i18n.getI18nText(this.getLabelCode());
+		} else
+			text = this.getLabelCode();
+		return text;
+	}
+
+	/**
+	 * Method to convert the configuration objects to readable text
+	 * 
+	 * @return
+	 */
+	public String getConfigText() {
+		return (this.getConfigData() != null ? (this.getConfigData() instanceof Jsonable
+				? ((Jsonable) this.getConfigData()).toJson().toString() : this.getConfigData().toString()) : "N/A");
+	}
+
+	/**
+	 * Method to convert the user objects to readable text
+	 * 
+	 * @return
+	 */
+	public String getUserText() {
+		return (this.getUserData() != null ? this.getUserData().toJson().toString() : "N/A. ");
+	}
+
+	/**
+	 * Getting a formatted message for legacy reasons to include the localised
+	 * text
+	 * 
+	 * @return Text representation of the exception
+	 */
+	public String getFormattedMessage() {
+		return getFormattedMessage(true);
+	}
+
+	/**
+	 * Readable representation of the expcetion. Used mostly for writing into
+	 * log files
+	 * 
+	 * @param isLocalised
+	 *            If the message should be localised using the I18n instance
+	 * @return String message with exception details
+	 */
+	public String getFormattedMessage(boolean isLocalised) {
+		StringBuilder errMessage = new StringBuilder(100);
+		errMessage.append("Eror ID:" + getExceptionId() + System.lineSeparator());
+		errMessage.append("Error Code:" + this.getLabelCode() + System.lineSeparator());
+		if (isLocalised)
+			errMessage.append("Error Message:" + getLocalisedText() + System.lineSeparator());
+
+		errMessage.append("Config Data:" + getConfigText() + System.lineSeparator());
+		errMessage.append("User Data:" + getUserText() + System.lineSeparator());
+		return errMessage.toString();
+
+	}
+
+	/**
+	 * Legacy text message in JSON format
+	 * 
+	 * @return String in JSON format
+	 */
+	public String getJsonMessage() {
+		return getJson(false).toString();
+
+	}
+
+	/**
+	 * Method to return a JsonObject of the exception
+	 * 
+	 * @param isLocalised
+	 *            If the object should contain localised text descriptions
+	 * @return Json object of the exception
+	 */
+	public JsonObject getJson(boolean isLocalised) {
+		JsonObject obj = new JsonObject();
+		obj.addProperty("ERROR_ID", getExceptionId());
+		obj.addProperty("Label_Code", this.getLabelCode());
+		if (isLocalised)
+			obj.addProperty("Error_Message", getLocalisedText());
+
+		if (this.getConfigData() != null && this.getConfigData() instanceof Jsonable)
+			obj.add("Config_Data", ((Jsonable) this.getConfigData()).toJson());
+		else
+			obj.addProperty("Config_Data", getConfigText());
+		obj.add("User_Data", this.getUserData().toJson());
+		return obj;
+
+	}
+
+	/**
+	 * Constructor that accepts a label code as well as DbDataObject to support
+	 * with debugging.
+	 * 
 	 * @param svarogLabelCode
 	 * @param dbo
 	 */
-	public SvException(String svarogLabelCode, DbDataObject instanceUser, Jsonable userData, Object configData, Throwable cause)
-	{
-		this(svarogLabelCode, instanceUser, userData,configData);
+	public SvException(String svarogLabelCode, DbDataObject instanceUser, Jsonable userData, Object configData,
+			Throwable cause) {
+		this(svarogLabelCode, instanceUser, userData, configData);
 		initCause(cause);
 	}
 
-
-	public SvException(String svarogLabelCode, DbDataObject instanceUser, Jsonable userData, Object configData)
-	{
+	/**
+	 * Constructor to support constructing an exception with available extended
+	 * application data
+	 * 
+	 * @param svarogLabelCode
+	 *            The label code of the exception
+	 * @param instanceUser
+	 *            The user under which the svarog instance was running
+	 * @param userData
+	 *            The user data which is related to the exception
+	 * @param configData
+	 *            The configuration data related to the exception
+	 */
+	public SvException(String svarogLabelCode, DbDataObject instanceUser, Jsonable userData, Object configData) {
 		this(svarogLabelCode, instanceUser);
-		this.userData=userData;
-		this.configData=configData;
+		this.userData = userData;
+		this.configData = configData;
 	}
 
 	/**
-	 * Getter method to return the svarog Label Code to be used for getting
-	 * a I18n message.
+	 * Getter method to return the svarog Label Code to be used for getting a
+	 * I18n message.
 	 * 
 	 * @return String label code to be used with {@link I18n}
 	 */
-	public String getLabelCode()
-	{
+	public String getLabelCode() {
 		return i18nLabelCode;
 	}
 
@@ -150,6 +249,18 @@ public class SvException extends Exception {
 
 	public DateTime getTimeStamp() {
 		return timeStamp;
+	}
+
+	public String getUserLocale() {
+		return userLocale;
+	}
+
+	public void setUserLocale(String userLocale) {
+		this.userLocale = userLocale;
+	}
+
+	public void setUserData(Jsonable userData) {
+		this.userData = userData;
 	}
 
 }

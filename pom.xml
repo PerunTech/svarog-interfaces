@@ -13,10 +13,10 @@
 
 	<groupId>svarog</groupId>
 	<artifactId>svarog-interfaces</artifactId>
-	<version>3.0.6</version>
+	<version>3.0.6.1</version>
 	<packaging>jar</packaging>
 
-	<name>svarog-interfaces</name>
+	<name>Svarog API Interfaces</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
