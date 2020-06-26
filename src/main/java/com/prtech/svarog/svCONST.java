@@ -188,6 +188,9 @@ public final class svCONST {
 
 	public static final long OBJECT_TYPE_CLUSTER = MIN_WRITEABLE_OBJID + 53;
 
+	public static final long OBJECT_TYPE_RESERVED_DONTUSE1 = MIN_WRITEABLE_OBJID + 54;
+	
+	public static final long OBJECT_TYPE_RESERVED_DONTUSE2 = MIN_WRITEABLE_OBJID + 55;
 	
 	public static final long OBJECT_TYPE_PERUN_PLUGIN = MIN_WRITEABLE_OBJID + 56;
 
