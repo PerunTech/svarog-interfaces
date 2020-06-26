@@ -289,6 +289,7 @@ public class ResponseHandler extends Jsonable {
 			responseObject.addProperty("message", message);
 			msgText = message;
 		}
+		responseObject.addProperty("label_code", labelCode);
 		return responseObject;
 	}
 
@@ -306,6 +307,7 @@ public class ResponseHandler extends Jsonable {
 			responseObject.addProperty("message", message);
 			msgText = message;
 		}
+		responseObject.addProperty("label_code", labelCode);
 		return responseObject;
 	}
 
