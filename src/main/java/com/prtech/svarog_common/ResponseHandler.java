@@ -10,6 +10,7 @@ import com.prtech.svarog_interfaces.II18n;
 public class ResponseHandler extends Jsonable {
 	/**
 	 * Enum type for the type of response
+	 * 
 	 * @author ristepejov
 	 *
 	 */
@@ -18,14 +19,47 @@ public class ResponseHandler extends Jsonable {
 	}
 
 	static II18n i18n = null;
-	static String userLocale = null;
-	
-	private MessageType rType;
-	private String rTitle;
-	private String rMessage;
-	private String sData;
+	static String defaultLocale = null;
+
+	private MessageType msgType;
+	private String labelCode;
+	private String userLocale;
+	private String msgTitle;
+	private String msgText;
+	private String msgData;
 	private JsonElement jData;
 	private JsonObject responseObject;
+
+	/**
+	 * Constructor to create a handler by type, locale and label code
+	 * @param type The message type of the handler
+	 * @param labelCode The label code used for localisation
+	 * @param userLocale The user locale to be used for translation
+	 */
+	public ResponseHandler(MessageType type, String labelCode, String userLocale) {
+		this.userLocale = userLocale;
+		create(type, labelCode);
+	}
+
+	public ResponseHandler(MessageType type, String labelCode) {
+		this(type, labelCode, defaultLocale);
+	}
+
+	/**
+	 * Empty constructor
+	 */
+	public ResponseHandler() {
+
+	}
+
+	/**
+	 * Method to return the user locale, or default if user local is null
+	 * 
+	 * @return string id of the locale
+	 */
+	private String getLocale() {
+		return userLocale == null ? userLocale : userLocale;
+	}
 
 	/**
 	 * method to create response handler in case of SvException but when is
@@ -43,10 +77,10 @@ public class ResponseHandler extends Jsonable {
 	 */
 	public static ResponseHandler responseHandlerByException(JsonObject afterJson, String titleOverwrite) {
 		ResponseHandler jrh = new ResponseHandler();
-		String errCOde = "";
+		String errCode = "";
 
 		if (afterJson.has("ERROR_ID"))
-			errCOde = afterJson.get("ERROR_ID").getAsString();
+			errCode = afterJson.get("ERROR_ID").getAsString();
 		String errTitle = "";
 		if (titleOverwrite != null)
 			errTitle = titleOverwrite;
@@ -55,9 +89,8 @@ public class ResponseHandler extends Jsonable {
 		String customType = "ERROR";
 		if ("error.invalid_session".equalsIgnoreCase(errTitle) || "system.under.maintenance".equalsIgnoreCase(errTitle))
 			customType = "EXCEPTION";
-		jrh.create(customType, 
-				(i18n!=null?i18n.getI18nText(userLocale,errTitle):errTitle)
-				, errCOde, new JsonObject());
+		jrh.create(customType, (i18n != null ? i18n.getI18nText(defaultLocale, errTitle) : errTitle), errCode,
+				new JsonObject());
 		return jrh;
 	}
 
@@ -92,7 +125,9 @@ public class ResponseHandler extends Jsonable {
 	 *         no data
 	 */
 	public static ResponseHandler responseHandlerByException(SvException e) {
-		return responseHandlerByException(e, "");
+
+		String title = i18n == null ? "" : i18n.getI18nText(e.getLabelCode());
+		return responseHandlerByException(e, title);
 	}
 
 	/**
@@ -115,14 +150,16 @@ public class ResponseHandler extends Jsonable {
 	 */
 	public JsonObject getAllv1() {
 		JsonObject rObject = new JsonObject();
-		if (rType != null)
-			rObject.addProperty("type", rType.toString());
-		if (rTitle != null && rTitle != "")
-			rObject.addProperty("title", rTitle);
-		if (rMessage != null && sData != "")
-			rObject.addProperty("message", rMessage);
-		if (sData != null && sData != "")
-			rObject.addProperty("data", sData);
+		if (msgType != null)
+			rObject.addProperty("type", msgType.toString());
+		if (labelCode != null)
+			rObject.addProperty("label_code", labelCode.toString());
+		if (msgTitle != null && msgTitle != "")
+			rObject.addProperty("title", msgTitle);
+		if (msgText != null && msgData != "")
+			rObject.addProperty("message", msgText);
+		if (msgData != null && msgData != "")
+			rObject.addProperty("data", msgData);
 		if (jData != null)
 			rObject.addProperty("data", jData.toString());
 		return rObject;
@@ -148,7 +185,7 @@ public class ResponseHandler extends Jsonable {
 		responseObject = createBasicData(typee, title, message);
 		if (data != null && data != "") {
 			responseObject.addProperty("data", data);
-			sData = data;
+			msgData = data;
 		}
 	}
 
@@ -156,8 +193,22 @@ public class ResponseHandler extends Jsonable {
 		responseObject = createBasicData(typee, title, message);
 		if (data != null && data != "") {
 			responseObject.addProperty("data", data);
-			sData = data;
+			msgData = data;
 		}
+	}
+
+	/**
+	 * Method to create a response with Type and Label code. Based on the label
+	 * code and the locale the system shall translate it.
+	 * 
+	 * @param typee
+	 * @param labelCode
+	 */
+	public void create(MessageType type, String labelCode) {
+
+		String title = i18n == null ? "" : i18n.getI18nText(getLocale(), labelCode);
+		String message = i18n == null ? "" : i18n.getI18nLongText(getLocale(), labelCode);
+		responseObject = createBasicData(type, title, message);
 	}
 
 	/**
@@ -213,31 +264,32 @@ public class ResponseHandler extends Jsonable {
 			responseObject.addProperty("type", typee);
 			switch (typee.toUpperCase()) {
 			case "SUCCESS":
-				rType = MessageType.SUCCESS;
+				msgType = MessageType.SUCCESS;
 				break;
 			case "ERROR":
-				rType = MessageType.ERROR;
+				msgType = MessageType.ERROR;
 				break;
 			case "WARNING":
-				rType = MessageType.WARNING;
+				msgType = MessageType.WARNING;
 				break;
 			case "INFO":
-				rType = MessageType.INFO;
+				msgType = MessageType.INFO;
 				break;
 			case "EXCEPTION":
-				rType = MessageType.EXCEPTION;
+				msgType = MessageType.EXCEPTION;
 				break;
 			default:
 			}
 		}
 		if (title != null && title != "") {
 			responseObject.addProperty("title", title);
-			rTitle = title;
+			msgTitle = title;
 		}
 		if (message != null && message != "") {
 			responseObject.addProperty("message", message);
-			rMessage = message;
+			msgText = message;
 		}
+		responseObject.addProperty("label_code", labelCode);
 		return responseObject;
 	}
 
@@ -245,16 +297,17 @@ public class ResponseHandler extends Jsonable {
 		responseObject = new JsonObject();
 		if (typee != null) {
 			responseObject.addProperty("type", typee.toString());
-			rType = typee;
+			msgType = typee;
 		}
 		if (title != null && title != "") {
 			responseObject.addProperty("title", title);
-			rTitle = title;
+			msgTitle = title;
 		}
 		if (message != null && message != "") {
 			responseObject.addProperty("message", message);
-			rMessage = message;
+			msgText = message;
 		}
+		responseObject.addProperty("label_code", labelCode);
 		return responseObject;
 	}
 
@@ -288,5 +341,77 @@ public class ResponseHandler extends Jsonable {
 			jData = data;
 		}
 		return responseObject;
+	}
+
+	public MessageType getMsgType() {
+		return msgType;
+	}
+
+	public void setMsgType(MessageType msgType) {
+		this.msgType = msgType;
+	}
+
+	public String getLabelCode() {
+		return labelCode;
+	}
+
+	public void setLabelCode(String labelCode) {
+		this.labelCode = labelCode;
+	}
+
+	public String getUserLocale() {
+		return userLocale;
+	}
+
+	public void setUserLocale(String userLocale) {
+		this.userLocale = userLocale;
+	}
+
+	public String getMsgTitle() {
+		return msgTitle;
+	}
+
+	public void setMsgTitle(String msgTitle) {
+		this.msgTitle = msgTitle;
+	}
+
+	public String getMsgText() {
+		return msgText;
+	}
+
+	public void setMsgText(String msgText) {
+		this.msgText = msgText;
+	}
+
+	public String getMsgData() {
+		return msgData;
+	}
+
+	public void setMsgData(String msgData) {
+		this.msgData = msgData;
+	}
+
+	public JsonElement getjData() {
+		return jData;
+	}
+
+	public void setjData(JsonElement jData) {
+		this.jData = jData;
+	}
+
+	public static II18n getI18n() {
+		return i18n;
+	}
+
+	public static void setI18n(II18n i18n) {
+		ResponseHandler.i18n = i18n;
+	}
+
+	public static String getDefaultLocale() {
+		return defaultLocale;
+	}
+
+	public static void setDefaultLocale(String defaultLocale) {
+		ResponseHandler.defaultLocale = defaultLocale;
 	}
 }
