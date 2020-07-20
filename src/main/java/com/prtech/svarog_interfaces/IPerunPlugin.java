@@ -1,6 +1,7 @@
 package com.prtech.svarog_interfaces;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.google.gson.JsonObject;
 
@@ -121,4 +122,12 @@ public interface IPerunPlugin {
 	 */
 	boolean replaceContextMenuOnNew();
 
+	/**
+	 * Method to return a list of dependencies of the plugin. The list of
+	 * dependencies shall contain the context paths identiefied by the method
+	 * {@link #getContextName()} of each of the other plugin instances
+	 * 
+	 * @return
+	 */
+	List<String> dependencies();
 }
