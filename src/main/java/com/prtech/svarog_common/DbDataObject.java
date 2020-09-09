@@ -27,6 +27,10 @@ import com.prtech.svarog.svCONST;
 
 public class DbDataObject extends Jsonable {
 	/**
+	 * Static MAX DATE value to use for initialisation of DT_DELETE
+	 */
+	static DateTime MAX_DATE;
+	/**
 	 * PKID Unique versioning identifier of the object in the repo table
 	 */
 	Long pkid = 0L;
@@ -41,9 +45,9 @@ public class DbDataObject extends Jsonable {
 	/**
 	 * Timestamp when the object version was invalidated, i.e. a new version has
 	 * become current If the object is still valid the value is equal to
-	 * svCONST.MAX_DATE
+	 * MAX_DATE
 	 */
-	DateTime dt_delete;
+	DateTime dt_delete = MAX_DATE;
 	/**
 	 * Object Id of the parent
 	 */
@@ -55,7 +59,10 @@ public class DbDataObject extends Jsonable {
 	/**
 	 * Status of the object. Constrained by the
 	 */
-	String status;
+	String status = svCONST.STATUS_VALID;
+	/**
+	 * Object id of the user who updated the object
+	 */
 	Long user_id = 0L;
 	/**
 	 * Hashmap containing all meta data about the object
@@ -560,6 +567,7 @@ public class DbDataObject extends Jsonable {
 
 	/**
 	 * Set flag that the object has loaded the geometry from the database
+	 * 
 	 * @deprecated
 	 */
 	@Deprecated

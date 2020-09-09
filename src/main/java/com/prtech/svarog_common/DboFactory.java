@@ -13,6 +13,8 @@
  *******************************************************************************/
 package com.prtech.svarog_common;
 
+import org.joda.time.DateTime;
+
 /**
  * Simple factory class, to make a DbDataObject read-only. Its one way
  * operation.
@@ -52,5 +54,14 @@ public class DboFactory {
 	 */
 	public static void dboIsGeometryType(DbDataObject dbo) {
 		dbo.setGeometryType(true);
+	}
+	/**
+	 * Revert the protected member DbDataObject.isReadOnly to true
+	 * 
+	 * @param dbo
+	 *            The DbDataObject instance which will be flagged as read-only
+	 */
+	static public void setInitialMaxDate(DateTime dtMax) {
+			DbDataObject.MAX_DATE = dtMax;
 	}
 }
