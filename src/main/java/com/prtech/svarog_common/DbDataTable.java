@@ -22,6 +22,8 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.core.impl.Log4jContextFactory;
+
 import com.prtech.svarog_common.DbDataField.DbFieldType;
 
 /**
@@ -240,7 +242,7 @@ public class DbDataTable extends Jsonable {
 	private void syncMap() {
 		mapDbTableFields.clear();
 		for (int i = 0; i < dbTableFields.length; i++) {
-			if (dbTableFields[i] != null)
+			if (dbTableFields[i] != null && dbTableFields[i].getDbFieldName()!=null)
 				mapDbTableFields.put(dbTableFields[i].getDbFieldName().toUpperCase(), dbTableFields[i]);
 		}
 	}
