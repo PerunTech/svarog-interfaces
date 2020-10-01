@@ -127,7 +127,7 @@ public interface IPerunPlugin {
 	 * dependencies shall contain the context paths identiefied by the method
 	 * {@link #getContextName()} of each of the other plugin instances
 	 * 
-	 * @return
+	 * @return List of plugin dependencies of the plugin
 	 */
 	List<String> dependencies();
 
