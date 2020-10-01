@@ -121,13 +121,14 @@ public interface IPerunPlugin {
 	 * @return
 	 */
 	boolean replaceContextMenuOnNew();
-
+	
 	/**
 	 * Method to return a list of dependencies of the plugin. The list of
 	 * dependencies shall contain the context paths identiefied by the method
 	 * {@link #getContextName()} of each of the other plugin instances
 	 * 
-	 * @return
+	 * @return List of plugin dependencies of the plugin
 	 */
 	List<String> dependencies();
+
 }
