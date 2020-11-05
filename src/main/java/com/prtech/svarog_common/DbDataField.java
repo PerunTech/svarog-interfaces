@@ -36,6 +36,8 @@ public class DbDataField extends Jsonable {
 	String index_name;
 	String unique_constraint_name;
 	String unique_level = "NOT_UNIQUE";
+	String referentialTable;
+	String refereftialField;
 
 	// to implement
 	String label_code;
@@ -316,5 +318,21 @@ public class DbDataField extends Jsonable {
 
 	public void setGeometrySrid(String geometrySrid) {
 		this.geometrySrid = geometrySrid;
+	}
+	
+	public void setReferentialTable(String referentialTable) {
+		this.referentialTable = referentialTable;
+	}
+	
+	public String getReferentialTable() {
+		return referentialTable;
+	}
+	
+	public void setRefereftialField(String refereftialField) {
+		this.refereftialField = refereftialField;
+	}
+	
+	public String getRefereftialField() {
+		return refereftialField;
 	}
 }
