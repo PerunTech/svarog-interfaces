@@ -198,6 +198,8 @@ public final class svCONST {
 	
 	public static final long OBJECT_TYPE_EXECPACK_ITEM = MIN_WRITEABLE_OBJID + 58;
 
+	public static final long OBJECT_TYPE_SYS_PARAMS = MIN_WRITEABLE_OBJID + 59;
+	
 	/* SVAROG WELL KNOWN SECURITY IDs */
 	public static final String SID_NOBODY_UID = "S-1-0-0";
 	public static final String SID_EVERYONE_UID = "S-1-1-0";
@@ -214,6 +216,7 @@ public final class svCONST {
 	public static final long SID_ADMINISTRATORS = -6;
 	public static final long OBJECT_USER_SERVICE = -12;
 	public static final long OBJECT_USER_SYSTEM = -13;
+	
 
 	public static DbDataObject systemUser = getSystemUser();
 	public static DbDataObject serviceUser = getServiceUser();
