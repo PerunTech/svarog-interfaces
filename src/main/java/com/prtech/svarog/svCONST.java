@@ -48,8 +48,7 @@ public final class svCONST {
 
 	// finally the list of repofields is in svarog
 	// WARNING the values must be all UPPER CASE
-	public static ArrayList<String> repoFieldNames = new ArrayList<String>(Arrays.asList("PKID", "META_PKID",
-			"DT_INSERT", "DT_DELETE", "OBJECT_ID", "PARENT_ID", "OBJECT_TYPE", "STATUS", "USER_ID"));
+	public static final ArrayList<String> repoFieldNames = initRepoNames();
 
 	public static final long SYSTEM_FILESTORE_ID = -1;
 
@@ -189,17 +188,17 @@ public final class svCONST {
 	public static final long OBJECT_TYPE_CLUSTER = MIN_WRITEABLE_OBJID + 53;
 
 	public static final long OBJECT_TYPE_RESERVED_DONTUSE1 = MIN_WRITEABLE_OBJID + 54;
-	
+
 	public static final long OBJECT_TYPE_RESERVED_DONTUSE2 = MIN_WRITEABLE_OBJID + 55;
-	
+
 	public static final long OBJECT_TYPE_PERUN_PLUGIN = MIN_WRITEABLE_OBJID + 56;
 
 	public static final long OBJECT_TYPE_EXECUTOR_PACK = MIN_WRITEABLE_OBJID + 57;
-	
+
 	public static final long OBJECT_TYPE_EXECPACK_ITEM = MIN_WRITEABLE_OBJID + 58;
 
 	public static final long OBJECT_TYPE_SYS_PARAMS = MIN_WRITEABLE_OBJID + 59;
-	
+
 	/* SVAROG WELL KNOWN SECURITY IDs */
 	public static final String SID_NOBODY_UID = "S-1-0-0";
 	public static final String SID_EVERYONE_UID = "S-1-1-0";
@@ -216,7 +215,6 @@ public final class svCONST {
 	public static final long SID_ADMINISTRATORS = -6;
 	public static final long OBJECT_USER_SERVICE = -12;
 	public static final long OBJECT_USER_SYSTEM = -13;
-	
 
 	public static DbDataObject systemUser = getSystemUser();
 	public static DbDataObject serviceUser = getServiceUser();
@@ -229,6 +227,19 @@ public final class svCONST {
 		serviceUser.setVal("USER_NAME", "USER_SERVICE");
 		DboFactory.makeDboReadOnly(serviceUser);
 		return serviceUser;
+	}
+
+	/**
+	 * Method to initialise the array holding the repo field name constants.
+	 * 
+	 * @return
+	 */
+	private static ArrayList<String> initRepoNames() {
+		ArrayList<String> retVal = new ArrayList<>(DbDataObject.repoFieldNames.size());
+		for (char[] rf : DbDataObject.repoFieldNames) {
+			retVal.add(new String(rf));
+		}
+		return retVal;
 	}
 
 	private static DbDataObject getSystemUser() {

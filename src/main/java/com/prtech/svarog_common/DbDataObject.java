@@ -14,6 +14,7 @@
 package com.prtech.svarog_common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -26,6 +27,22 @@ import com.google.gson.JsonObject;
 import com.prtech.svarog.svCONST;
 
 public class DbDataObject extends Jsonable {
+	/**
+	 * DbDataObject repo constants
+	 */
+	public static final char[] PKID = { 'P', 'K', 'I', 'D' };
+	public static final char[] META_PKID = { 'M', 'E', 'T', 'A', '_', 'P', 'K', 'I', 'D' };
+	public static final char[] DT_INSERT = { 'D', 'T', '_', 'I', 'N', 'S', 'E', 'R', 'T' };
+	public static final char[] DT_DELETE = { 'D', 'T', '_', 'D', 'E', 'L', 'E', 'T', 'E' };
+	public static final char[] OBJECT_ID = { 'O', 'B', 'J', 'E', 'C', 'T', '_', 'I', 'D' };
+	public static final char[] PARENT_ID = { 'P', 'A', 'R', 'E', 'N', 'T', '_', 'I', 'D' };
+	public static final char[] OBJECT_TYPE = { 'O', 'B', 'J', 'E', 'C', 'T', '_', 'T', 'Y', 'P', 'E' };
+	public static final char[] STATUS = { 'S', 'T', 'A', 'T', 'U', 'S' };
+	public static final char[] USER_ID = { 'U', 'S', 'E', 'R', '_', 'I', 'D' };
+
+	public static final ArrayList<char[]> repoFieldNames = new ArrayList<char[]>(
+			Arrays.asList(PKID, META_PKID, DT_INSERT, DT_DELETE, OBJECT_ID, PARENT_ID, OBJECT_TYPE, STATUS, USER_ID));
+
 	/**
 	 * Static MAX DATE value to use for initialisation of DT_DELETE
 	 */
@@ -44,8 +61,7 @@ public class DbDataObject extends Jsonable {
 	DateTime dt_insert;
 	/**
 	 * Timestamp when the object version was invalidated, i.e. a new version has
-	 * become current If the object is still valid the value is equal to
-	 * MAX_DATE
+	 * become current If the object is still valid the value is equal to MAX_DATE
 	 */
 	DateTime dt_delete = MAX_DATE;
 	/**
@@ -116,46 +132,46 @@ public class DbDataObject extends Jsonable {
 	}
 
 	public Object getRepoVal(String key) {
+		return getRepoVal((byte) svCONST.repoFieldNames.indexOf(key));
+
+	}
+
+	public Object getRepoVal(byte type) {
 		Object retval = null;
-		switch (key) {
-		case "OBJECT_ID":
+		switch (type) {
+		case SvCharId.OBJECT_ID:
 			retval = object_id;
 			break;
-		case "OBJECT_TYPE":
+		case SvCharId.OBJECT_TYPE:
 			retval = object_type;
 			break;
-		case "PARENT_ID":
+		case SvCharId.PARENT_ID:
 			retval = parent_id;
 			break;
-		case "PKID":
+		case SvCharId.PKID:
 			retval = pkid;
 			break;
-		case "DT_INSERT":
+		case SvCharId.DT_INSERT:
 			retval = dt_insert;
 			break;
-		case "DT_DELETE":
+		case SvCharId.DT_DELETE:
 			retval = dt_delete;
 			break;
-		case "STATUS":
+		case SvCharId.STATUS:
 			retval = status;
 			break;
-		case "USER_ID":
+		case SvCharId.USER_ID:
 			retval = user_id;
 			break;
 		default:
+			retval = null;
 			break;
 		}
 		return retval;
 	}
 
 	public Object getVal(String key, boolean includeRepoFields) {
-		Object retval = null;
-		if (includeRepoFields && svCONST.repoFieldNames.indexOf(key) >= 0) {
-			retval = getRepoVal(key);
-		} else
-			retval = getVal(key);
-
-		return retval;
+		return getVal(new SvCharId(key), includeRepoFields);
 	}
 
 	public Object getVal(SvCharId svKey) {
@@ -205,8 +221,8 @@ public class DbDataObject extends Jsonable {
 	}
 
 	/**
-	 * Method to return the unique object id in the Svarog system. If the object
-	 * has not been persisted to the database, the ID shall be 0
+	 * Method to return the unique object id in the Svarog system. If the object has
+	 * not been persisted to the database, the ID shall be 0
 	 * 
 	 * @return The unique object ID in the database
 	 */
@@ -229,8 +245,7 @@ public class DbDataObject extends Jsonable {
 	/**
 	 * Method to replace the object value map with a new one
 	 * 
-	 * @param newValues
-	 *            The map containing the new values
+	 * @param newValues The map containing the new values
 	 */
 	public void setValuesMap(LinkedHashMap<SvCharId, Object> newValues) {
 		this.values = newValues;
@@ -318,8 +333,7 @@ public class DbDataObject extends Jsonable {
 	/**
 	 * Timestamp when the current version of the object has been persisted
 	 * 
-	 * @param dtInsert
-	 *            The timestamp value to be set
+	 * @param dtInsert The timestamp value to be set
 	 * 
 	 */
 
@@ -340,11 +354,10 @@ public class DbDataObject extends Jsonable {
 	}
 
 	/**
-	 * Method to set the timestamp when the current version of the object has
-	 * been deleted
+	 * Method to set the timestamp when the current version of the object has been
+	 * deleted
 	 * 
-	 * @param dtDelete
-	 *            The timestamp value to be set
+	 * @param dtDelete The timestamp value to be set
 	 */
 	@Deprecated
 	public void setDt_delete(DateTime dt_delete) {
@@ -360,11 +373,10 @@ public class DbDataObject extends Jsonable {
 	}
 
 	/**
-	 * Method to set the timestamp when the current version of the object has
-	 * been deleted
+	 * Method to set the timestamp when the current version of the object has been
+	 * deleted
 	 * 
-	 * @param dtDelete
-	 *            The timestamp value to be set
+	 * @param dtDelete The timestamp value to be set
 	 */
 	public void setDtDelete(DateTime dtDelete) {
 		if (!isReadOnly) {
@@ -384,8 +396,8 @@ public class DbDataObject extends Jsonable {
 	}
 
 	/**
-	 * Method to get the object id of the parent object. The relation is
-	 * reflecting the parent child relationship between the types.
+	 * Method to get the object id of the parent object. The relation is reflecting
+	 * the parent child relationship between the types.
 	 * 
 	 * @return Object id of the parent object
 	 */
@@ -396,8 +408,7 @@ public class DbDataObject extends Jsonable {
 	/**
 	 * Set the object id of another object as parent.
 	 * 
-	 * @param parentId
-	 *            The object id of the parent
+	 * @param parentId The object id of the parent
 	 */
 	public void setParentId(Long parentId) {
 		if (!isReadOnly) {
@@ -426,11 +437,10 @@ public class DbDataObject extends Jsonable {
 	}
 
 	/**
-	 * Set the type id of the object. The type id corresponds to the object id
-	 * of the table
+	 * Set the type id of the object. The type id corresponds to the object id of
+	 * the table
 	 * 
-	 * @param objectType
-	 *            object id of the type
+	 * @param objectType object id of the type
 	 */
 	public void setObjectType(Long objectType) {
 		if (!isReadOnly) {
@@ -451,8 +461,7 @@ public class DbDataObject extends Jsonable {
 	/**
 	 * Method to set the status of the object
 	 * 
-	 * @param status
-	 *            String status of the object
+	 * @param status String status of the object
 	 */
 	public void setStatus(String status) {
 		if (!isReadOnly) {
@@ -481,11 +490,10 @@ public class DbDataObject extends Jsonable {
 	}
 
 	/**
-	 * Method to set the object id of the user which saved the last version of
-	 * the object
+	 * Method to set the object id of the user which saved the last version of the
+	 * object
 	 * 
-	 * @param userId
-	 *            The object id of the user object
+	 * @param userId The object id of the user object
 	 */
 	public void setUserId(Long userId) {
 		if (!isReadOnly) {
@@ -505,8 +513,8 @@ public class DbDataObject extends Jsonable {
 	}
 
 	/**
-	 * Method to check if the object has been modified after it was fetched from
-	 * the database
+	 * Method to check if the object has been modified after it was fetched from the
+	 * database
 	 * 
 	 * @return Flag if the object was changed or not
 	 */
@@ -515,11 +523,10 @@ public class DbDataObject extends Jsonable {
 	}
 
 	/**
-	 * Method to set the dirty flag (object has been modified after it was
-	 * fetched from the database)
+	 * Method to set the dirty flag (object has been modified after it was fetched
+	 * from the database)
 	 * 
-	 * @param isDirty
-	 *            Flag if the object was changed or not
+	 * @param isDirty Flag if the object was changed or not
 	 */
 	public void setIsDirty(boolean isDirty) {
 		if (!isReadOnly) {
@@ -576,11 +583,10 @@ public class DbDataObject extends Jsonable {
 	}
 
 	/**
-	 * Method that return least value (skipping null values) of target column
-	 * for each DbDataObject
+	 * Method that return least value (skipping null values) of target column for
+	 * each DbDataObject
 	 * 
-	 * @param targetColumn[]
-	 *            Column names for checking least value in
+	 * @param targetColumn[] Column names for checking least value in
 	 * @return Object
 	 */
 	public Double leastWithNullSkip(String[] targetColumn) {
@@ -606,11 +612,10 @@ public class DbDataObject extends Jsonable {
 	}
 
 	/**
-	 * Method that return least value (with nvl if null) of target column for
-	 * each DbDataObject
+	 * Method that return least value (with nvl if null) of target column for each
+	 * DbDataObject
 	 * 
-	 * @param targetColumn[]
-	 *            Column names for checking least value in
+	 * @param targetColumn[] Column names for checking least value in
 	 * @return Object
 	 */
 	public Double leastWithNvl(String[] targetColumn) {
@@ -642,11 +647,10 @@ public class DbDataObject extends Jsonable {
 	}
 
 	/**
-	 * Method that return least value (if there is a null value, returns null)
-	 * of target column for each DbDataObject
+	 * Method that return least value (if there is a null value, returns null) of
+	 * target column for each DbDataObject
 	 * 
-	 * @param targetColumn[]
-	 *            Column names for checking least value in
+	 * @param targetColumn[] Column names for checking least value in
 	 * @return Object
 	 */
 	public Double least(String[] targetColumn) {
@@ -678,11 +682,10 @@ public class DbDataObject extends Jsonable {
 	}
 
 	/**
-	 * Method that return greatest value (skipping null values) of target column
-	 * for each DbDataObject
+	 * Method that return greatest value (skipping null values) of target column for
+	 * each DbDataObject
 	 * 
-	 * @param targetColumn[]
-	 *            Column names for checking least value in
+	 * @param targetColumn[] Column names for checking least value in
 	 * @return Object
 	 */
 	public Double greatestWithNullSkip(String[] targetColumn) {
@@ -711,8 +714,7 @@ public class DbDataObject extends Jsonable {
 	 * Method that return greatest value (with nvl if null) of target column for
 	 * each DbDataObject
 	 * 
-	 * @param targetColumn[]
-	 *            Column name for checking greatest value
+	 * @param targetColumn[] Column name for checking greatest value
 	 * @return Object
 	 */
 	public Double greatestWithNvl(String[] targetColumn) {
@@ -744,11 +746,10 @@ public class DbDataObject extends Jsonable {
 	}
 
 	/**
-	 * Method that return greatest value (if there is a null value, returns
-	 * null) of target column for each DbDataObject
+	 * Method that return greatest value (if there is a null value, returns null) of
+	 * target column for each DbDataObject
 	 * 
-	 * @param targetColumn[]
-	 *            Column name for checking greatest value
+	 * @param targetColumn[] Column name for checking greatest value
 	 * @return Object
 	 */
 	public Double greatest(String[] targetColumn) {
@@ -777,6 +778,16 @@ public class DbDataObject extends Jsonable {
 		min = (Double) arrList.get(arrList.size() - 1);
 
 		return min;
+	}
+
+	public Object getVal(SvCharId key, boolean includeRepoFields) {
+		Object retval = null;
+		if (includeRepoFields && key.type > 0) {
+			retval = getRepoVal(key.type);
+		} else
+			retval = getVal(key);
+
+		return retval;
 	}
 
 }
