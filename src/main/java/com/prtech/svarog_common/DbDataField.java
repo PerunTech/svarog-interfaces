@@ -19,6 +19,12 @@ public class DbDataField extends Jsonable {
 
 	private static ResourceBundle sqlKWResource = null;
 
+	static String sysGeometrySrid;
+	
+	public static void initSrid(String srid) {
+		sysGeometrySrid = srid;
+	}
+	
 	public enum DbFieldType {
 		NVARCHAR, BOOLEAN, NUMERIC, TIMESTAMP, DATE, TIME, BLOB, TEXT, GEOMETRY, UNDEFINED
 	};
@@ -98,7 +104,7 @@ public class DbDataField extends Jsonable {
 		sqlType = sqlType.replace("{SIZE}", sizeSuffix);
 		if (this.field_type.equals(DbFieldType.GEOMETRY)) {
 			sqlType = sqlType.replace("{GEOMETRY_TYPE}", geometryType);
-			sqlType = sqlType.replace("{SRID}", geometrySrid);
+			sqlType = sqlType.replace("{SRID}", sysGeometrySrid);
 		}
 
 		return sqlKWResource.getString("OBJECT_QUALIFIER_LEFT") + field_name

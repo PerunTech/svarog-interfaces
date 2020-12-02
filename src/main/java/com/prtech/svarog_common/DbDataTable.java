@@ -32,7 +32,12 @@ import com.prtech.svarog_common.DbDataField.DbFieldType;
  */
 public class DbDataTable extends Jsonable {
 	private static ResourceBundle sqlKWResource = null;
-
+	static String geometrySrid;
+	
+	public static void initSrid(String srid) {
+		geometrySrid = srid;
+	}
+	
 	Long objectId;
 
 	// configuration about the parent object
