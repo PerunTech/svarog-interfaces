@@ -131,4 +131,6 @@ public interface IPerunPlugin {
 	 */
 	List<String> dependencies();
 
+	JsonObject getContextMenu(String contextMenuLabel, ISvCore core);
+
 }
