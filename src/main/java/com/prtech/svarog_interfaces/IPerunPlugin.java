@@ -98,22 +98,6 @@ public interface IPerunPlugin {
 	boolean replaceMenuOnNew();
 
 	/**
-	 * Method to return the JSON object representing the module context menu.
-	 * This menu is used to configure the frontend.
-	 * 
-	 * @param contextMap
-	 *            The map of parameters from the frontend describing the context
-	 *            for the menu request
-	 * @param existingMenu
-	 *            The existing menu configuration from the database is passed as
-	 *            reference
-	 * @param core
-	 *            The SvCore instance used to validate permissions
-	 * @return The configuration of the context menu for the plugin
-	 */
-	JsonObject getContextMenu(HashMap<String, String> contextMap, JsonObject existingMenu, ISvCore core);
-
-	/**
 	 * If this flag is set to true, svarog use the return value of the
 	 * {@link #getContextMenu(HashMap, JsonObject)} method to update the menu
 	 * configuration in the database (if version update is needed)
@@ -121,7 +105,7 @@ public interface IPerunPlugin {
 	 * @return
 	 */
 	boolean replaceContextMenuOnNew();
-	
+
 	/**
 	 * Method to return a list of dependencies of the plugin. The list of
 	 * dependencies shall contain the context paths identiefied by the method
@@ -130,5 +114,14 @@ public interface IPerunPlugin {
 	 * @return List of plugin dependencies of the plugin
 	 */
 	List<String> dependencies();
+
+	/**
+	 * Method to return the JSON object representing the module context menu.
+	 * This menu is used to configure the frontend.
+	 * 
+	 * @param contextMenuLabel
+	 *            label of the conxzt menu which should be generated
+	 */
+	JsonObject getContextMenu(String contextMenuLabel, ISvCore core);
 
 }
