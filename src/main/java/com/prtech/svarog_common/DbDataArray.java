@@ -35,8 +35,8 @@ import com.prtech.svarog.svCONST;
  */
 public class DbDataArray extends Jsonable {
 	/**
-	 * String variable holding the name of the field according to which the
-	 * array will be indexed by using {@link #rebuildIndex(String)} or
+	 * String variable holding the name of the field according to which the array
+	 * will be indexed by using {@link #rebuildIndex(String)} or
 	 * {@link #rebuildIndex(String, Boolean)}
 	 */
 	String indexField = null;
@@ -64,24 +64,27 @@ public class DbDataArray extends Jsonable {
 	}
 
 	/**
+	 * Default empty constructor
+	 */
+	public DbDataArray(List<DbDataObject> dba) {
+		items = new ArrayList<>(dba);
+	}
+
+	/**
 	 * Overloaded method to sort by specific field name. This version includes
 	 * indexing including parent ID.
 	 * 
-	 * @param idxField
-	 *            The field to be used for indexing
+	 * @param idxField The field to be used for indexing
 	 */
 	public void rebuildIndex(String idxField) {
 		rebuildIndex(idxField, false);
 	}
 
 	/**
-	 * The method to rebuild the index by allowing inclusion of the parent Id
-	 * too.
+	 * The method to rebuild the index by allowing inclusion of the parent Id too.
 	 * 
-	 * @param idxField
-	 *            The field to be used for indexing
-	 * @param excludeParentId
-	 *            Flag to exclude the parent Id if required
+	 * @param idxField        The field to be used for indexing
+	 * @param excludeParentId Flag to exclude the parent Id if required
 	 */
 	public void rebuildIndex(String idxField, Boolean excludeParentId) {
 		indexField = idxField;
@@ -108,11 +111,9 @@ public class DbDataArray extends Jsonable {
 	/**
 	 * Fetch an item by key, field name including a parent id
 	 * 
-	 * @param key
-	 *            The key according to which the object should be fetched from
-	 *            the index
-	 * @param parentId
-	 *            The parentId of the object
+	 * @param key      The key according to which the object should be fetched from
+	 *                 the index
+	 * @param parentId The parentId of the object
 	 * @return The resulting DbDataObject if found
 	 */
 	public DbDataObject getItemByIdx(String key, Long parentId) {
@@ -122,9 +123,8 @@ public class DbDataArray extends Jsonable {
 	/**
 	 * Fetch an item by key, field name without parent ID
 	 * 
-	 * @param key
-	 *            The key according to which the object should be fetched from
-	 *            the index
+	 * @param key The key according to which the object should be fetched from the
+	 *            index
 	 * @return The resulting DbDataObject if found
 	 */
 	public DbDataObject getItemByIdx(String key) {
@@ -134,8 +134,7 @@ public class DbDataArray extends Jsonable {
 	/**
 	 * Method for adding a DbDataObject to the collection
 	 * 
-	 * @param obj
-	 *            The object to be added
+	 * @param obj The object to be added
 	 */
 	public void addDataItem(DbDataObject obj) {
 		items.add(obj);
@@ -159,7 +158,7 @@ public class DbDataArray extends Jsonable {
 	public int size() {
 		return items.size();
 	}
-	
+
 	public Boolean isEmpty() {
 		return items.isEmpty();
 	}
@@ -176,17 +175,18 @@ public class DbDataArray extends Jsonable {
 		if (idxField != null)
 			indexField = idxField;
 	}
+
 	public ArrayList<DbDataObject> getSortedItems(final String fieldName) {
-			return  getSortedItems(fieldName, false);
+		return getSortedItems(fieldName, false);
 	}
 
-	
 	public ArrayList<DbDataObject> getSortedItems(final String fieldName, final boolean includeRepoFields) {
 		Collections.sort(items, new Comparator<DbDataObject>() {
 			public int compare(DbDataObject o1, DbDataObject o2) {
 				if (o1.getVal(fieldName, includeRepoFields) != null && o2.getVal(fieldName, includeRepoFields) != null)
 					return compareTo(o1.getVal(fieldName, includeRepoFields), o2.getVal(fieldName, includeRepoFields));
-				else if (o1.getVal(fieldName, includeRepoFields) == null && o2.getVal(fieldName, includeRepoFields) == null)
+				else if (o1.getVal(fieldName, includeRepoFields) == null
+						&& o2.getVal(fieldName, includeRepoFields) == null)
 					return 0;
 				else if (o1.getVal(fieldName, includeRepoFields) == null)
 					return -1;
@@ -201,10 +201,8 @@ public class DbDataArray extends Jsonable {
 	 * Method for sorting the list of DbDataObjects. It only allows sorting
 	 * according to metadata
 	 * 
-	 * @param val
-	 *            The first value to compare
-	 * @param val2
-	 *            The second value to compare
+	 * @param val  The first value to compare
+	 * @param val2 The second value to compare
 	 * @return Result if the first value is greater than the second
 	 */
 	protected int compareTo(Object val, Object val2) {
@@ -222,8 +220,7 @@ public class DbDataArray extends Jsonable {
 	 * considered that each object in the Array belongs to same object type)
 	 * contains (all) the in: fields
 	 * 
-	 * @param fields
-	 *            Array of fields name
+	 * @param fields Array of fields name
 	 * @return Boolean
 	 */
 
@@ -244,15 +241,13 @@ public class DbDataArray extends Jsonable {
 	}
 
 	/**
-	 * Method that grouping DbDataObject by key according value on columns in
-	 * the array (if groupColumn is null that all DbDataObject belong in one
-	 * group).
+	 * Method that grouping DbDataObject by key according value on columns in the
+	 * array (if groupColumn is null that all DbDataObject belong in one group).
 	 * 
-	 * @param groupColumn
-	 *            Array of column name
-	 * @return HashMap of couple key (string merged from values for the columns)
-	 *         and value ( {@link DbDataArray} of {@link DbDataObject} which are
-	 *         from the same group)
+	 * @param groupColumn Array of column name
+	 * @return HashMap of couple key (string merged from values for the columns) and
+	 *         value ( {@link DbDataArray} of {@link DbDataObject} which are from
+	 *         the same group)
 	 */
 
 	public HashMap<String, DbDataArray> groupItemsByColumn(String[] groupColumn) {
@@ -293,8 +288,7 @@ public class DbDataArray extends Jsonable {
 	/**
 	 * Method that sum the value of the target column for DbDataObjects.
 	 * 
-	 * @param columnName
-	 *            Column name by which the values are summarized
+	 * @param columnName Column name by which the values are summarized
 	 * @return BigDecimal
 	 */
 	public BigDecimal sum(String columnName) {
@@ -315,16 +309,13 @@ public class DbDataArray extends Jsonable {
 	/**
 	 * Method that sum the value of the target column for DbDataObjects.
 	 * 
-	 * @param hOperation
-	 *            Type of horizontal operation to get value of target columns
-	 *            for sum
+	 * @param hOperation   Type of horizontal operation to get value of target
+	 *                     columns for sum
 	 * 
-	 * @param targetColumn
-	 *            Array of column name for sum
-	 * @param groupColumn
-	 *            Array of column name by group
-	 * @return HashMap of couple key (string merged from values for the columns)
-	 *         and value ( sum value for the same group)
+	 * @param targetColumn Array of column name for sum
+	 * @param groupColumn  Array of column name by group
+	 * @return HashMap of couple key (string merged from values for the columns) and
+	 *         value ( sum value for the same group)
 	 */
 	public HashMap<String, Double> sum(String hOperation, String[] targetColumn, String[] groupColumn) {
 		HashMap<String, Double> result = new HashMap<>();
@@ -366,10 +357,9 @@ public class DbDataArray extends Jsonable {
 	/**
 	 * Method that count items for each group of DbDataObjects
 	 * 
-	 * @param groupColumn
-	 *            Array of column name by group
-	 * @return HashMap of couple key (string merged from values for the columns)
-	 *         and value (number on items of the same group)
+	 * @param groupColumn Array of column name by group
+	 * @return HashMap of couple key (string merged from values for the columns) and
+	 *         value (number on items of the same group)
 	 */
 	public HashMap<String, Integer> count(String[] groupColumn) {
 		HashMap<String, Integer> result = new HashMap<>();
@@ -383,19 +373,15 @@ public class DbDataArray extends Jsonable {
 	}
 
 	/**
-	 * Method that count items for each group of DbDataObjects, that
-	 * accomplishes certain condition(s)
+	 * Method that count items for each group of DbDataObjects, that accomplishes
+	 * certain condition(s)
 	 * 
-	 * @param targetColumn
-	 *            Array of column name for condition
-	 * @param columnValue
-	 *            Array of value for each target column to compare
-	 * @param logicalOperator
-	 *            Logical operator (AND/OR)
-	 * @param groupColumn
-	 *            Array of column name by group
-	 * @return HashMap of couple key (string merged from values for the columns)
-	 *         and value (number on items of the same group)
+	 * @param targetColumn    Array of column name for condition
+	 * @param columnValue     Array of value for each target column to compare
+	 * @param logicalOperator Logical operator (AND/OR)
+	 * @param groupColumn     Array of column name by group
+	 * @return HashMap of couple key (string merged from values for the columns) and
+	 *         value (number on items of the same group)
 	 */
 	public HashMap<String, Integer> countIf(String[] targetColumn, String[] columnValue, String logicalOperator,
 			String[] groupColumn) {
@@ -423,14 +409,16 @@ public class DbDataArray extends Jsonable {
 				for (int i = 0; i < targetColumn.length; i++) {
 					if (logicalOperator.equals("AND")) {
 						conditionAccomplished = obj.getVal(targetColumn[i]) != null
-								? obj.getVal(targetColumn[i]).toString().equals(columnValue[i]) : false;
+								? obj.getVal(targetColumn[i]).toString().equals(columnValue[i])
+								: false;
 
 						if (!conditionAccomplished) {
 							break;
 						}
 					} else if (logicalOperator.equals("OR")) {
 						conditionAccomplished = obj.getVal(targetColumn[i]) != null
-								? obj.getVal(targetColumn[i]).toString().equals(columnValue[i]) : false;
+								? obj.getVal(targetColumn[i]).toString().equals(columnValue[i])
+								: false;
 
 						if (conditionAccomplished) {
 							break;
@@ -452,12 +440,10 @@ public class DbDataArray extends Jsonable {
 	 * Method that return minimum value of target column for each group of
 	 * DbDataObjects
 	 * 
-	 * @param targetColumn
-	 *            Column name for checking minimum value
-	 * @param groupColumn
-	 *            Array of column name by group
-	 * @return HashMap of couple key (string merged from values for the columns)
-	 *         and value (minimum)
+	 * @param targetColumn Column name for checking minimum value
+	 * @param groupColumn  Array of column name by group
+	 * @return HashMap of couple key (string merged from values for the columns) and
+	 *         value (minimum)
 	 */
 	public HashMap<String, Double> least(String targetColumn, String[] groupColumn) {
 		HashMap<String, Double> result = new HashMap<>();
@@ -488,12 +474,10 @@ public class DbDataArray extends Jsonable {
 	 * Method that return maximum value of target column for each group of
 	 * DbDataObjects
 	 * 
-	 * @param targetColumn
-	 *            Column name for checking maximum value
-	 * @param groupColumn
-	 *            Array of column name by group
-	 * @return HashMap of couple key (string merged from values for the columns)
-	 *         and value (maximum)
+	 * @param targetColumn Column name for checking maximum value
+	 * @param groupColumn  Array of column name by group
+	 * @return HashMap of couple key (string merged from values for the columns) and
+	 *         value (maximum)
 	 */
 	public HashMap<String, Double> greatest(String targetColumn, String[] groupColumn) {
 		HashMap<String, Double> result = new HashMap<>();
@@ -524,15 +508,12 @@ public class DbDataArray extends Jsonable {
 	 * Method that return average value of target columns for each group of
 	 * DbDataObjects
 	 * 
-	 * @param hOperation
-	 *            Type of horizontal operation to get value of target columns
-	 *            for sum
-	 * @param targetColumn
-	 *            Column name for sum than calculate average value
-	 * @param groupColumn
-	 *            Array of column name by group
-	 * @return HashMap of couple key (string merged from values for the columns)
-	 *         and value (average)
+	 * @param hOperation   Type of horizontal operation to get value of target
+	 *                     columns for sum
+	 * @param targetColumn Column name for sum than calculate average value
+	 * @param groupColumn  Array of column name by group
+	 * @return HashMap of couple key (string merged from values for the columns) and
+	 *         value (average)
 	 */
 	public HashMap<String, Double> avg(String hOperation, String[] targetColumn, String[] groupColumn) {
 		HashMap<String, Double> result = new HashMap<>();
@@ -550,23 +531,21 @@ public class DbDataArray extends Jsonable {
 	 * Method for getting distinct values for some DbDataArray for appropriate
 	 * columns
 	 * 
-	 * @param items
-	 *            The data set for evaluation
-	 * @param columns
-	 *            List of column/field names for which the distinct count should
-	 *            be done
-	 * @return HashMap<String, List<Object>> where key is the field name and
-	 *         value is the list of the distinct-ed object by the appropriate
-	 *         key
+	 * @param items   The data set for evaluation
+	 * @param columns List of column/field names for which the distinct count should
+	 *                be done
+	 * @return HashMap<String, List<Object>> where key is the field name and value
+	 *         is the list of the distinct-ed object by the appropriate key
 	 * @throws SvException
 	 */
-	public Map<String, List<Object>> getDistinctValuesPerColumns(List<String> listOfColumns, DbDataArray fieldsPerObjectType)
-			throws SvException {
+	public Map<String, List<Object>> getDistinctValuesPerColumns(List<String> listOfColumns,
+			DbDataArray fieldsPerObjectType) throws SvException {
 		Map<String, List<Object>> result = new HashMap<String, List<Object>>();
 		if (!items.isEmpty() && listOfColumns != null && listOfColumns.size() > 0) {
 			// cross-check column validation according object type
-			//DbDataArray fieldsPerObjectType = svr.getObjectsByParentId(items.get(0).getObject_type(),
-			//		svCONST.OBJECT_TYPE_FIELD, null, 0, 0);
+			// DbDataArray fieldsPerObjectType =
+			// svr.getObjectsByParentId(items.get(0).getObject_type(),
+			// svCONST.OBJECT_TYPE_FIELD, null, 0, 0);
 			if (fieldsPerObjectType.size() > 0) {
 				for (DbDataObject tempField : fieldsPerObjectType.getItems()) {
 					String fieldName = tempField.getVal("FIELD_NAME").toString();
