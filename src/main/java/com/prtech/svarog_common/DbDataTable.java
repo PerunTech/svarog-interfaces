@@ -22,8 +22,6 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
-import org.apache.logging.log4j.core.impl.Log4jContextFactory;
-
 import com.prtech.svarog_common.DbDataField.DbFieldType;
 
 /**
@@ -33,11 +31,11 @@ import com.prtech.svarog_common.DbDataField.DbFieldType;
 public class DbDataTable extends Jsonable {
 	private static ResourceBundle sqlKWResource = null;
 	static String geometrySrid;
-	
+
 	public static void initSrid(String srid) {
 		geometrySrid = srid;
 	}
-	
+
 	Long objectId;
 
 	// configuration about the parent object
@@ -247,7 +245,7 @@ public class DbDataTable extends Jsonable {
 	private void syncMap() {
 		mapDbTableFields.clear();
 		for (int i = 0; i < dbTableFields.length; i++) {
-			if (dbTableFields[i] != null && dbTableFields[i].getDbFieldName()!=null)
+			if (dbTableFields[i] != null && dbTableFields[i].getDbFieldName() != null)
 				mapDbTableFields.put(dbTableFields[i].getDbFieldName().toUpperCase(), dbTableFields[i]);
 		}
 	}
@@ -303,18 +301,15 @@ public class DbDataTable extends Jsonable {
 	 * 
 	 * public String getUpdateUrl() { return update_url; }
 	 * 
-	 * public void setUpdateUrl(String updateUrl) { this.update_url = updateUrl;
-	 * }
+	 * public void setUpdateUrl(String updateUrl) { this.update_url = updateUrl; }
 	 * 
 	 * public String getDeleteUrl() { return delete_url; }
 	 * 
-	 * public void setDeleteUrl(String deleteUrl) { this.delete_url = deleteUrl;
-	 * }
+	 * public void setDeleteUrl(String deleteUrl) { this.delete_url = deleteUrl; }
 	 * 
 	 * public String getCreateUrl() { return create_url; }
 	 * 
-	 * public void setCreateUrl(String createUrl) { this.create_url = createUrl;
-	 * }
+	 * public void setCreateUrl(String createUrl) { this.create_url = createUrl; }
 	 * 
 	 * public String getReadUrl() { return read_url; }
 	 * 
