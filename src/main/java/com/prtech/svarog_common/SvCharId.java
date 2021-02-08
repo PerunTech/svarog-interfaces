@@ -13,10 +13,7 @@
  *******************************************************************************/
 package com.prtech.svarog_common;
 
-import java.io.ObjectInputStream.GetField;
 import java.util.Arrays;
-
-import org.omg.CORBA.RepositoryIdHelper;
 
 import com.prtech.svarog.svCONST;
 
