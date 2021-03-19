@@ -25,7 +25,6 @@ svarog-interfaces-install:
   stage: mvn_install
   script:  
     - pwd
-    - mvn install
     - mvn deploy
   only:
     - master
