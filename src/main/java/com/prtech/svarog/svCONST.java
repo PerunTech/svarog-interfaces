@@ -102,9 +102,10 @@ public final class svCONST {
 	/**
 	 * Object ID Constant of the object which describes the cluster coordinator.
 	 */
-	public static final long CONFIGURATION_LOG_TYPE = 47;
+	public static final long OBJECT_TYPE_CONFIGURATION_LOG= 47;
 	public static final long CLUSTER_COORDINATOR_ID = 48;
 	public static final long OBJECT_ID_HEADQUARTER = 49;
+	
 	// Object types which are managed via saveObject
 	public static final long MIN_WRITEABLE_OBJID = 50;
 	public static final long OBJECT_TYPE_TABLE = MIN_WRITEABLE_OBJID;
