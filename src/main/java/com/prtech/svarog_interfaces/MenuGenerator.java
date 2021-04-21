@@ -1,10 +1,13 @@
 package com.prtech.svarog_interfaces;
 
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /**
@@ -19,21 +22,33 @@ public abstract class MenuGenerator {
 
 	static final Logger log4j = LogManager.getLogger(MenuGenerator.class.getName());
 
-	// GSON instanse
+	/**
+	 * Gson instance
+	 */
 	Gson gson;
-	// JsonObject description
+	/**
+	 * JsonObject description
+	 */
 	JsonObject initialJsonObject;
-	// the first key in the json array, which keeps information about the module
-	// title; for example for OTSC module the moduleCode is
-	// "perun.otsc.module_menu.navigation"
-	String moduleCode = "";
-	// the first key in the value of the first key, which keeps the information
-	// about the menu title; for example for the main menu in the OTSC module,
-	// the menuCode is "otsc.module_menu.firstModuleMenuItems"
-	String menuCode = "";
-	// ISvCore instance
+	/**
+	 * The first key in the json array, which keeps information about the module
+	 * title; for example for OTSC module the moduleCode is
+	 * "perun.otsc.module_menu.navigation"
+	 */
+	String moduleCode;
+	/**
+	 * The first key in the value of the first key, which keeps the information
+	 * about the menu title; for example for the main menu in the OTSC module,
+	 * the menuCode is "otsc.module_menu.firstModuleMenuItems"
+	 */
+	String menuCode;
+	/**
+	 * ISvCore instance
+	 */
 	ISvCore svr;
-	// Final result
+	/**
+	 * Final result
+	 */
 	JsonArray result;
 
 	public JsonArray getResult() {
@@ -67,24 +82,91 @@ public abstract class MenuGenerator {
 	 *
 	 */
 	JsonArray generateMenuItems() {
-		JsonArray result = null;
+		JsonArray finalResult = null;
 		if (this.initialJsonObject == null || this.initialJsonObject.get(moduleCode) == null) {
 			return null;
 		}
 		try {
+			JsonArray tempResult = new JsonArray();
+			finalResult = new JsonArray();
 			JsonObject getObject = (JsonObject) this.initialJsonObject.get(moduleCode);
-			result = (JsonArray) getObject.get(this.menuCode);
-			JsonObject tempObj;
-			for (int i = 0; i < result.size(); i++) {
-				tempObj = (JsonObject) result.get(i);
-				if (!checkIfMenuItemIsPermitable(tempObj, svr) || !checkIfMenuItemHasProperStructure(tempObj)) {
-					result.remove(i);
-				} else {
-					parseSubMenuItems(tempObj, svr);
+			tempResult = (JsonArray) getObject.get(this.menuCode);
+			for (int i = 0; i < tempResult.size(); i++) {
+				JsonObject tempObj = createNewInstanceJsonObject((JsonObject) tempResult.get(i));
+				if (!(!checkIfMenuItemIsPermitable(tempObj, svr) || !checkIfMenuItemHasProperStructure(tempObj))) {
+					JsonArray tempSubMenu = processSubmenuItems(tempObj, svr);
+					if (tempSubMenu != null) {
+						tempObj.add("sub-menu", tempSubMenu);
+					}
+					finalResult.add(tempObj);
 				}
 			}
 		} catch (Exception e) {
 			log4j.error(e);
+		}
+		return finalResult;
+	}
+
+	/**
+	 * Iterative method in order to do additional checks of the subMenuItems
+	 * 
+	 * @param menuItem
+	 *            - the menu item for which we want to validate the sub menu
+	 *            items
+	 * @param svr
+	 *            -SvCore instance in order to get the user permission list
+	 *            through the session
+	 * @author zpetr
+	 *
+	 */
+	private JsonArray processSubmenuItems(JsonObject menuItem, ISvCore svr) {
+		JsonArray resultMenuItems = null;
+		if (menuItem.has("sub-menu") && menuItem.get("sub-menu") != null) {
+			resultMenuItems = new JsonArray();
+			JsonArray subMenuItems = (JsonArray) menuItem.get("sub-menu");
+			for (int i = 0; i < subMenuItems.size(); i++) {
+				JsonObject tempObj = (JsonObject) subMenuItems.get(i);
+				if (!(!checkIfMenuItemIsPermitable(tempObj, svr) || !checkIfMenuItemHasProperStructure(tempObj))) {
+					resultMenuItems.add(tempObj);
+				}
+			}
+		}
+		return resultMenuItems;
+	}
+
+	/**
+	 * Method for creating new json instace. Useful when we modify the json per
+	 * session
+	 * 
+	 * @param refJsonObject
+	 *            Referent json object
+	 * @return
+	 */
+	private JsonObject createNewInstanceJsonObject(JsonObject refJsonObject) {
+		JsonObject jObj = new JsonObject();
+		for (Map.Entry<String, JsonElement> entry : refJsonObject.entrySet()) {
+			jObj.add(entry.getKey(), entry.getValue());
+		}
+		return jObj;
+	}
+
+	/**
+	 * Boolean check if the menu item satisfies the structure defined with
+	 * convention\ It can be changed according user/project needs, but it can
+	 * affect data lose for previous versions, so a proper consolidation is
+	 * needed before changing it
+	 * 
+	 * @param menuItem
+	 *            - the menu item which is the subject of validation
+	 * 
+	 * @author zpetr
+	 *
+	 */
+	private Boolean checkIfMenuItemHasProperStructure(JsonObject menuItem) {
+		Boolean result = true;
+		if (!menuItem.has("labelCode") || !menuItem.has("id") || !menuItem.has("menuItemLevel")
+				|| !menuItem.has("order") || !menuItem.has("permissionCode") || !menuItem.has("contextMenuLabelCode")) {
+			result = false;
 		}
 		return result;
 	}
@@ -104,58 +186,11 @@ public abstract class MenuGenerator {
 	 */
 	private Boolean checkIfMenuItemIsPermitable(JsonObject menuItem, ISvCore svr) {
 		Boolean result = true;
-		if (menuItem.has("permissionCode") && menuItem.get("permissionCode") != null) {
-			if (!svr.hasPermission(menuItem.get("permissionCode").toString())) {
+		if (menuItem.has("permissionCode") && !menuItem.get("permissionCode").isJsonNull()) {
+			if (!svr.hasPermission(menuItem.get("permissionCode").getAsString())) {
 				result = false;
 			}
 		}
 		return result;
 	}
-
-	/**
-	 * Iterative method in order to do additional checks of the subMenuItems
-	 * 
-	 * @param menuItem
-	 *            - the menu item for which we want to validate the sub menu
-	 *            items
-	 * @param svr
-	 *            -SvCore instance in order to get the user permission list
-	 *            through the session
-	 * @author zpetr
-	 *
-	 */
-	private void parseSubMenuItems(JsonObject menuItem, ISvCore svr) {
-		if (menuItem.has("sub-menu") && menuItem.get("sub-menu") != null) {
-			JsonArray subMeniItems = (JsonArray) menuItem.get("sub-menu");
-			JsonObject tempObj;
-			for (int i = 0; i < subMeniItems.size(); i++) {
-				tempObj = (JsonObject) subMeniItems.get(i);
-				if (!checkIfMenuItemIsPermitable(tempObj, svr) || !checkIfMenuItemHasProperStructure(tempObj)) {
-					subMeniItems.remove(i);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Boolean check if the menu item satisfies the structure defined with
-	 * convention\ It can be changed according user/project needs, but it can
-	 * affect data lose for previous versions, so a proper consolidation is
-	 * needed before changing it
-	 * 
-	 * @param menuItem
-	 *            - the menu item which is the subject of validation
-	 * 
-	 * @author zpetr
-	 *
-	 */
-	Boolean checkIfMenuItemHasProperStructure(JsonObject menuItem) {
-		Boolean result = true;
-		if (!menuItem.has("labelCode") || !menuItem.has("id") || !menuItem.has("menuItemLevel")
-				|| !menuItem.has("order") || !menuItem.has("permissionCode") || !menuItem.has("contextMenuLabelCode")) {
-			result = false;
-		}
-		return result;
-	}
-
 }
