@@ -31,19 +31,17 @@ public abstract class MenuGenerator {
 	 */
 	JsonObject initialJsonObject;
 	/**
-	 * The first key in the json array, which keeps information about the module
-	 * title; for example for OTSC module the moduleCode is
-	 * "perun.otsc.module_menu.navigation"
+	 * The first key in the {@link JsonArray}, which keeps information about the
+	 * module title, usually label code of type {@link String}
 	 */
 	String moduleCode;
 	/**
 	 * The first key in the value of the first key, which keeps the information
-	 * about the menu title; for example for the main menu in the OTSC module,
-	 * the menuCode is "otsc.module_menu.firstModuleMenuItems"
+	 * about the menu title, usually label code of type {@link String}
 	 */
 	String menuCode;
 	/**
-	 * ISvCore instance
+	 * {@link ISvCore} instance
 	 */
 	ISvCore svr;
 	/**
@@ -75,46 +73,44 @@ public abstract class MenuGenerator {
 	 * Main method in order to get the final results with menu items for
 	 * specific moduleCode and menuCode
 	 * 
-	 * It does not have any specific params, because it use the one defined in
-	 * the class and sent through the constructor
+	 * It does not have any specific parameters, because it use the one defined
+	 * in the class and sent through the constructor
 	 * 
 	 * @author zpetr
 	 *
 	 */
 	JsonArray generateMenuItems() {
-		JsonArray finalResult = null;
+		JsonArray result = null;
 		if (this.initialJsonObject == null || this.initialJsonObject.get(moduleCode) == null) {
 			return null;
 		}
 		try {
-			JsonArray tempResult = new JsonArray();
-			finalResult = new JsonArray();
+			result = new JsonArray();
 			JsonObject getObject = (JsonObject) this.initialJsonObject.get(moduleCode);
-			tempResult = (JsonArray) getObject.get(this.menuCode);
-			for (int i = 0; i < tempResult.size(); i++) {
-				JsonObject tempObj = createNewInstanceJsonObject((JsonObject) tempResult.get(i));
-				if (!(!checkIfMenuItemIsPermitable(tempObj, svr) || !checkIfMenuItemHasProperStructure(tempObj))) {
-					JsonArray tempSubMenu = processSubmenuItems(tempObj, svr);
+			JsonArray jArrayMenuItems = (JsonArray) getObject.get(this.menuCode);
+			for (int i = 0; i < jArrayMenuItems.size(); i++) {
+				JsonObject tempJObj = createNewInstanceJsonObject((JsonObject) jArrayMenuItems.get(i));
+				if (!(!checkIfMenuItemIsPermitable(tempJObj, svr) || !checkIfMenuItemHasProperStructure(tempJObj))) {
+					JsonArray tempSubMenu = processSubmenuItems(tempJObj, svr);
 					if (tempSubMenu != null) {
-						tempObj.add("sub-menu", tempSubMenu);
+						tempJObj.add("sub-menu", tempSubMenu);
 					}
-					finalResult.add(tempObj);
+					result.add(tempJObj);
 				}
 			}
 		} catch (Exception e) {
 			log4j.error(e);
 		}
-		return finalResult;
+		return result;
 	}
 
 	/**
 	 * Iterative method in order to do additional checks of the subMenuItems
 	 * 
 	 * @param menuItem
-	 *            - the menu item for which we want to validate the sub menu
-	 *            items
+	 *            The menu item for which we want to validate the sub menu items
 	 * @param svr
-	 *            -SvCore instance in order to get the user permission list
+	 *            SvCore instance in order to get the user permission list
 	 *            through the session
 	 * @author zpetr
 	 *
