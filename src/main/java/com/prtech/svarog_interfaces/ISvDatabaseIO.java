@@ -21,7 +21,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Interface providing basic methods needed by the svarog core to work on

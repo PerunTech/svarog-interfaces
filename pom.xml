@@ -13,7 +13,7 @@
 
 	<groupId>svarog</groupId>
 	<artifactId>svarog-interfaces</artifactId>
-	<version>3.2.4</version>
+	<version>3.3.0</version>
 	<packaging>jar</packaging>
 
 	<name>Svarog API Interfaces</name>
@@ -49,9 +49,9 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>com.vividsolutions</groupId>
+			<groupId>org.locationtech.jts</groupId>
 			<artifactId>jts-core</artifactId>
-			<version>1.14.0</version>
+			<version>1.18.1</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
