@@ -57,10 +57,10 @@ import com.prtech.svarog_common.DbDataObject;
 import com.prtech.svarog_common.DboFactory;
 import com.prtech.svarog_interfaces.ISvDatabaseIO;
 import com.prtech.svarog_common.SvCharId;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKBReader;
-import org.locationtech.jts.io.WKBWriter;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKBReader;
+import com.vividsolutions.jts.io.WKBWriter;
 
 /**
  * 
@@ -355,5 +355,7 @@ public interface ISvCore {
 	public DbDataObject getSaveAsUser();
 
 	public void setSaveAsUser(DbDataObject saveAsUser);
+
+	public void setInstanceUser(DbDataObject serviceUser) throws SvException;
 
 }
