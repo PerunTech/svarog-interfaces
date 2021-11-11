@@ -782,7 +782,7 @@ public class DbDataObject extends Jsonable {
 
 	public Object getVal(SvCharId key, boolean includeRepoFields) {
 		Object retval = null;
-		if (includeRepoFields && key.type > 0) {
+		if (includeRepoFields && key.type >= 0) {
 			retval = getRepoVal(key.type);
 		} else
 			retval = getVal(key);

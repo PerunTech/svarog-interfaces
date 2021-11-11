@@ -30,7 +30,6 @@ import com.prtech.svarog_interfaces.II18n;
  *
  */
 public class SvException extends Exception {
-
 	/**
 	 * 
 	 */
@@ -104,8 +103,10 @@ public class SvException extends Exception {
 	 * @return
 	 */
 	public String getConfigText() {
-		return (this.getConfigData() != null ? (this.getConfigData() instanceof Jsonable
-				? ((Jsonable) this.getConfigData()).toJson().toString() : this.getConfigData().toString()) : "N/A");
+		return (this.getConfigData() != null
+				? (this.getConfigData() instanceof Jsonable ? ((Jsonable) this.getConfigData()).toJson().toString()
+						: this.getConfigData().toString())
+				: "N/A");
 	}
 
 	/**
@@ -118,8 +119,7 @@ public class SvException extends Exception {
 	}
 
 	/**
-	 * Getting a formatted message for legacy reasons to include the localised
-	 * text
+	 * Getting a formatted message for legacy reasons to include the localised text
 	 * 
 	 * @return Text representation of the exception
 	 */
@@ -128,11 +128,10 @@ public class SvException extends Exception {
 	}
 
 	/**
-	 * Readable representation of the expcetion. Used mostly for writing into
-	 * log files
+	 * Readable representation of the expcetion. Used mostly for writing into log
+	 * files
 	 * 
-	 * @param isLocalised
-	 *            If the message should be localised using the I18n instance
+	 * @param isLocalised If the message should be localised using the I18n instance
 	 * @return String message with exception details
 	 */
 	public String getFormattedMessage(boolean isLocalised) {
@@ -161,8 +160,7 @@ public class SvException extends Exception {
 	/**
 	 * Method to return a JsonObject of the exception
 	 * 
-	 * @param isLocalised
-	 *            If the object should contain localised text descriptions
+	 * @param isLocalised If the object should contain localised text descriptions
 	 * @return Json object of the exception
 	 */
 	public JsonObject getJson(boolean isLocalised) {
@@ -176,14 +174,14 @@ public class SvException extends Exception {
 			obj.add("Config_Data", ((Jsonable) this.getConfigData()).toJson());
 		else
 			obj.addProperty("Config_Data", getConfigText());
-		obj.add("User_Data", (this.getUserData()!=null?this.getUserData().toJson():new JsonObject()));
+		obj.add("User_Data", (this.getUserData() != null ? this.getUserData().toJson() : new JsonObject()));
 		return obj;
 
 	}
 
 	/**
-	 * Constructor that accepts a label code as well as DbDataObject to support
-	 * with debugging.
+	 * Constructor that accepts a label code as well as DbDataObject to support with
+	 * debugging.
 	 * 
 	 * @param svarogLabelCode
 	 * @param dbo
@@ -198,14 +196,10 @@ public class SvException extends Exception {
 	 * Constructor to support constructing an exception with available extended
 	 * application data
 	 * 
-	 * @param svarogLabelCode
-	 *            The label code of the exception
-	 * @param instanceUser
-	 *            The user under which the svarog instance was running
-	 * @param userData
-	 *            The user data which is related to the exception
-	 * @param configData
-	 *            The configuration data related to the exception
+	 * @param svarogLabelCode The label code of the exception
+	 * @param instanceUser    The user under which the svarog instance was running
+	 * @param userData        The user data which is related to the exception
+	 * @param configData      The configuration data related to the exception
 	 */
 	public SvException(String svarogLabelCode, DbDataObject instanceUser, Jsonable userData, Object configData) {
 		this(svarogLabelCode, instanceUser);
@@ -214,8 +208,8 @@ public class SvException extends Exception {
 	}
 
 	/**
-	 * Getter method to return the svarog Label Code to be used for getting a
-	 * I18n message.
+	 * Getter method to return the svarog Label Code to be used for getting a I18n
+	 * message.
 	 * 
 	 * @return String label code to be used with {@link I18n}
 	 */

@@ -356,4 +356,6 @@ public interface ISvCore {
 
 	public void setSaveAsUser(DbDataObject saveAsUser);
 
+	public void setInstanceUser(DbDataObject serviceUser) throws SvException;
+
 }
