@@ -1,6 +1,7 @@
 package com.prtech.svarog_interfaces;
 
 import java.sql.Connection;
+import java.util.List;
 
 /**
  * Interface which shall allow continuous Run of SvConfiguration. A normal
@@ -26,5 +27,14 @@ public interface ISvConfigurationMulti extends ISvConfiguration {
 	 * @return The version number of the interface
 	 */
 	int getVersion(int currentVersion);
+
+	/**
+	 * Method which provides information about the types of configuration which this
+	 * configurator will provide. If the update is not in the List svarog will not
+	 * call the update configuration method
+	 * 
+	 * @return List of UpdateType configurations provided by this ISvConfiguration
+	 */
+	List<UpdateType> getUpdateTypes();
 
 }
