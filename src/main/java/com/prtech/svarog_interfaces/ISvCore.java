@@ -13,54 +13,12 @@
  *******************************************************************************/
 package com.prtech.svarog_interfaces;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.ReferenceQueue;
-import java.lang.ref.SoftReference;
-import java.math.BigDecimal;
-import java.net.URL;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.joda.time.DateTime;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.prtech.svarog.SvAclKey;
 import com.prtech.svarog.SvException;
 import com.prtech.svarog_common.DbDataArray;
-import com.prtech.svarog_common.DbDataField;
-import com.prtech.svarog_common.DbDataField.DbFieldType;
 import com.prtech.svarog_common.DbDataObject;
-import com.prtech.svarog_common.DboFactory;
-import com.prtech.svarog_interfaces.ISvDatabaseIO;
-import com.prtech.svarog_common.SvCharId;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKBReader;
-import com.vividsolutions.jts.io.WKBWriter;
 
 /**
  * 
@@ -246,7 +204,6 @@ public interface ISvCore {
 	 * @throws SvException
 	 *             Any underlying exception is re-thrown
 	 */
-	@SuppressWarnings("unchecked")
 	public HashMap<SvAclKey, HashMap<String, DbDataObject>> getPermissions() throws SvException ;
 
 	/**

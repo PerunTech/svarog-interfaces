@@ -91,7 +91,7 @@ public class DbDataArray extends Jsonable {
 		String idxKey = null;
 		for (DbDataObject obj : items) {
 			if (obj.getVal(indexField) != null) {
-				idxKey = (excludeParentId ? "" : obj.getParent_id().toString())
+				idxKey = (excludeParentId ? "" : obj.getParentId().toString())
 						+ obj.getVal(indexField).toString().toUpperCase();
 				idxItems.put(idxKey, obj);
 			}

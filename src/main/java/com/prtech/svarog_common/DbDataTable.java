@@ -295,26 +295,6 @@ public class DbDataTable extends Jsonable {
 		this.isSystemTable = isSystemTable;
 	}
 
-	/*
-	 * TODO Remove this part after successful testing. Redundant
-	 * 
-	 * 
-	 * public String getUpdateUrl() { return update_url; }
-	 * 
-	 * public void setUpdateUrl(String updateUrl) { this.update_url = updateUrl; }
-	 * 
-	 * public String getDeleteUrl() { return delete_url; }
-	 * 
-	 * public void setDeleteUrl(String deleteUrl) { this.delete_url = deleteUrl; }
-	 * 
-	 * public String getCreateUrl() { return create_url; }
-	 * 
-	 * public void setCreateUrl(String createUrl) { this.create_url = createUrl; }
-	 * 
-	 * public String getReadUrl() { return read_url; }
-	 * 
-	 * public void setReadUrl(String readUrl) { this.read_url = readUrl; }
-	 */
 	public DbDataField[] getDbTableFields() {
 		return dbTableFields;
 	}
