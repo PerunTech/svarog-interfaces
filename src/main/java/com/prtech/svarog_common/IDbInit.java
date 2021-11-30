@@ -13,14 +13,12 @@
  *******************************************************************************/
 package com.prtech.svarog_common;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 public interface IDbInit {
 
 	public ArrayList<DbDataTable> getCustomObjectTypes();
-	
+
 	public ArrayList<DbDataObject> getCustomObjectInstances();
 
 }

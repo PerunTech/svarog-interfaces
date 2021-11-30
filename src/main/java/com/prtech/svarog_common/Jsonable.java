@@ -14,8 +14,6 @@
 package com.prtech.svarog_common;
 
 import com.google.gson.JsonObject;
-import com.prtech.svarog.SvException;
-import com.prtech.svarog.svCONST;
 
 /**
  * Interface for implementing JSON serialisation
@@ -54,7 +52,7 @@ public abstract class Jsonable {
 	 * Quick access functions for populating the Object from JSON a wrapper for
 	 * this.memberJson.setMembersFromJson("", this, obj);
 	 * 
-	 * @return TODO
+	 * @return 
 	 */
 	public Boolean fromJson(JsonObject obj) {
 		return this.jsonIO.setMembersFromJson("", this, obj);

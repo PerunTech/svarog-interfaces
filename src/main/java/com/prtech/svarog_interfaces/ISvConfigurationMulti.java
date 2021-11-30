@@ -1,6 +1,5 @@
 package com.prtech.svarog_interfaces;
 
-import java.sql.Connection;
 import java.util.List;
 
 /**
