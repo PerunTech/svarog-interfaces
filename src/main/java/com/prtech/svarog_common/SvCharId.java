@@ -15,6 +15,8 @@ package com.prtech.svarog_common;
 
 import java.util.Arrays;
 
+import com.prtech.svarog.svCONST;
+
 /**
  * A class providing fast unique identification using ASCI based strings. The id
  * will be case insensitive if the string is ASCII, otherwise the ID will act in
@@ -27,6 +29,21 @@ import java.util.Arrays;
  *
  */
 public class SvCharId {
+
+	public static final byte PKID = 0;
+	public static final byte META_PKID = 1;
+	public static final byte DT_INSERT = 2;
+	public static final byte DT_DELETE = 3;
+	public static final byte OBJECT_ID = 4;
+	public static final byte PARENT_ID = 5;
+	public static final byte OBJECT_TYPE = 6;
+	public static final byte STATUS = 7;
+	public static final byte USER_ID = 8;
+	public static final byte OTHER = -1;
+	public static final int[] REPO_HASHES = { getHash(DbDataObject.PKID), getHash(DbDataObject.META_PKID),
+			getHash(DbDataObject.DT_INSERT), getHash(DbDataObject.DT_DELETE), getHash(DbDataObject.OBJECT_ID),
+			getHash(DbDataObject.PARENT_ID), getHash(DbDataObject.OBJECT_TYPE), getHash(DbDataObject.STATUS),
+			getHash(DbDataObject.USER_ID) };
 	/**
 	 * The char array holding the value of the ID
 	 */
@@ -37,23 +54,36 @@ public class SvCharId {
 	int hash;
 
 	/**
+	 * 
+	 */
+	final byte type;
+
+	/**
 	 * Public constructor from char[]
 	 * 
-	 * @param value
-	 *            the char[] reference holding the string array ID
+	 * @param value the char[] reference holding the string array ID
 	 */
 	public SvCharId(char[] value) {
-		this.value = value;
+		int repoIndex = DbDataObject.repoFieldNames.indexOf(value);
+		this.type = (byte) repoIndex;
+		if (repoIndex >= 0 && repoIndex < DbDataObject.repoFieldNames.size()) {
+			this.value = DbDataObject.repoFieldNames.get(repoIndex);
+		} else
+			this.value = value;
 		prepare();
 	}
 
 	/**
 	 * Public constructor from String object
 	 * 
-	 * @param strValue
-	 *            The string object on which the ID is based
+	 * @param strValue The string object on which the ID is based
 	 */
 	public SvCharId(String strValue) {
+		int repoIndex = svCONST.repoFieldNames.indexOf(strValue);
+		this.type = (byte) repoIndex;
+		if (repoIndex >= 0 && repoIndex < DbDataObject.repoFieldNames.size()) {
+			this.value = DbDataObject.repoFieldNames.get(repoIndex);
+		}
 		if (strValue != null)
 			this.value = strValue.toCharArray();
 		else
@@ -62,26 +92,51 @@ public class SvCharId {
 	}
 
 	/**
+	 * Public constructor from byte, containing the byte id of a repo field
+	 * 
+	 * @param type the byte id of a repo field index as per
+	 *             DbDataObject.repoFieldNames
+	 */
+	public SvCharId(byte type) {
+		if (type >= 0 && type < DbDataObject.repoFieldNames.size()) {
+			this.value = DbDataObject.repoFieldNames.get((int) type);
+		} else
+			this.value = null;
+		this.type = type;
+		prepare();
+
+	}
+
+	/**
 	 * Preparation method which calculates the hash and converts all small case
 	 * ASCII chars to upper case.
 	 */
 	private void prepare() {
+		if (type >= 0 && type < DbDataObject.repoFieldNames.size()) {
+			hash = REPO_HASHES[type];
+		}
 		if (value != null) {
-			int firstLower;
-			/* Now check if there are any characters that need to be changed. */
-			hash = 0;
-			for (firstLower = 0; firstLower < value.length;) {
-				int c = (int) value[firstLower];
-				if (c >= 97 && c <= 122) {
-					c -= 32;
-					value[firstLower] = (char) c;
-				}
-				firstLower += 1;
-				hash = 31 * hash + c;
-			}
+			hash = getHash(value);
 		} else
 			hash = 0;
 
+	}
+
+	static int getHash(char[] value) {
+		int hash;
+		int firstLower;
+		/* Now check if there are any characters that need to be changed. */
+		hash = 0;
+		for (firstLower = 0; firstLower < value.length;) {
+			int c = (int) value[firstLower];
+			if (c >= 97 && c <= 122) {
+				c -= 32;
+				value[firstLower] = (char) c;
+			}
+			firstLower += 1;
+			hash = 31 * hash + c;
+		}
+		return hash;
 	}
 
 	/**
