@@ -49,13 +49,13 @@ public class DbDataArray extends Jsonable implements Iterable<DbDataObject> {
 	/**
 	 * The list of DbDataObjects in the set
 	 */
-	ArrayList<DbDataObject> items = new ArrayList<DbDataObject>();
+	ArrayList<DbDataObject> items = new ArrayList<>();
 
 	/**
 	 * The index list populated by using {@link #rebuildIndex(String)} or
 	 * {@link #rebuildIndex(String, Boolean)}
 	 */
-	HashMap<String, DbDataObject> idxItems = new HashMap<String, DbDataObject>();
+	HashMap<String, DbDataObject> idxItems = new HashMap<>();
 
 	/**
 	 * Default empty constructor
