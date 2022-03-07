@@ -15,6 +15,7 @@ package com.prtech.svarog_common;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -39,7 +40,7 @@ public class DbDataArray extends Jsonable {
 	 * will be indexed by using {@link #rebuildIndex(String)} or
 	 * {@link #rebuildIndex(String, Boolean)}
 	 */
-	String indexField = null;
+	SvCharId indexField = null;
 
 	/**
 	 * Filter class providing means for filtering the set of objects
@@ -87,12 +88,12 @@ public class DbDataArray extends Jsonable {
 	 * @param excludeParentId Flag to exclude the parent Id if required
 	 */
 	public void rebuildIndex(String idxField, Boolean excludeParentId) {
-		indexField = idxField;
+		indexField = new SvCharId(idxField);
 		String idxKey = null;
 		for (DbDataObject obj : items) {
-			if (obj.getVal(indexField) != null) {
+			if (obj.getVal(indexField, true) != null) {
 				idxKey = (excludeParentId ? "" : obj.getParentId().toString())
-						+ obj.getVal(indexField).toString().toUpperCase();
+						+ obj.getVal(indexField, true).toString().toUpperCase();
 				idxItems.put(idxKey, obj);
 			}
 		}
@@ -159,7 +160,7 @@ public class DbDataArray extends Jsonable {
 		return items.size();
 	}
 
-	public Boolean isEmpty() {
+	public boolean isEmpty() {
 		return items.isEmpty();
 	}
 
@@ -173,7 +174,7 @@ public class DbDataArray extends Jsonable {
 
 	public DbDataArray(String idxField) {
 		if (idxField != null)
-			indexField = idxField;
+			indexField = new SvCharId(idxField);
 	}
 
 	public ArrayList<DbDataObject> getSortedItems(final String fieldName) {
@@ -590,4 +591,5 @@ public class DbDataArray extends Jsonable {
 		}
 		return result;
 	}
+
 }

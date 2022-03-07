@@ -131,6 +131,12 @@ public class DbDataObject extends Jsonable {
 		return false;
 	}
 
+	
+	public boolean hasVal(String key) {
+		return values.containsKey(key) && values.get(key) != null;
+
+	}
+
 	public Object getRepoVal(String key) {
 		return getRepoVal((byte) svCONST.repoFieldNames.indexOf(key));
 
