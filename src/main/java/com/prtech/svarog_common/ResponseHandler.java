@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.prtech.svarog.SvException;
+import com.prtech.svarog.svCONST;
 import com.prtech.svarog_common.Jsonable;
 import com.prtech.svarog_interfaces.II18n;
 
@@ -35,6 +36,7 @@ public class ResponseHandler extends Jsonable {
 	 * @param type The message type of the handler
 	 * @param labelCode The label code used for localisation
 	 * @param userLocale The user locale to be used for translation
+	 * @throws SvException 
 	 */
 	public ResponseHandler(MessageType type, String labelCode, String userLocale) {
 		this.userLocale = userLocale;
@@ -126,7 +128,7 @@ public class ResponseHandler extends Jsonable {
 	 */
 	public static ResponseHandler responseHandlerByException(SvException e) {
 
-		String title = i18n == null ? "" : i18n.getI18nText(e.getLabelCode());
+		String title = i18n == null ? e.getLabelCode() : i18n.getI18nText(e.getLabelCode());
 		return responseHandlerByException(e, title);
 	}
 
@@ -206,8 +208,8 @@ public class ResponseHandler extends Jsonable {
 	 */
 	public void create(MessageType type, String labelCode) {
 
-		String title = i18n == null ? "" : i18n.getI18nText(getLocale(), labelCode);
-		String message = i18n == null ? "" : i18n.getI18nLongText(getLocale(), labelCode);
+		String title = i18n == null ? labelCode : i18n.getI18nText(getLocale(), labelCode);
+		String message = i18n == null ? labelCode : i18n.getI18nLongText(getLocale(), labelCode);
 		responseObject = createBasicData(type, title, message);
 	}
 
