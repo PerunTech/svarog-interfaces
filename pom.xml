@@ -156,5 +156,5 @@
     </build>
   </profile>
 </profiles>
-	<description>Library containing all shared Svarog structures, used by libraries outside of svarog, which don't need the full svarog to operate.</description>
+	<description>Library containing all shared Svarog structures/interaces, used by libraries outside of svarog, which don't need the full svarog to operate.</description>
 </project>
