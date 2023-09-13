@@ -478,7 +478,7 @@ public class JsonIO {
 				 * obj.getObject_type()).getVal("GUI_METADATA")));
 				 */
 				if (fieldValue == null)
-					cell.add(null);
+					cell.add((Boolean)null);
 				else
 					addPrimitiveArrayItem(cell, memberFields[i].getType(), fieldValue, exParams);
 				if (exParams != null)
